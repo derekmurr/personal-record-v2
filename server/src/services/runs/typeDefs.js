@@ -18,15 +18,83 @@ const typeDefs = gql`
     "The unique MongoDB document ID of the run."
     id: ID!
     "The profile of the user who owns the run."
-    author: Profile!
+    user: Profile!
     "The date and time the run document was created."
     createdAt: DateTime!
     "Whether the run is blocked."
     isBlocked: Boolean
+    "Distance of the run, in km."
+    distance: Float!
+    "User-supplied name for the run."
+    title: String!
+    "Date and time the run began."
+    start: DateTime!
+    "Duration of the run, in ms."
+    duration: Int!
+    "Type of run workout."
+    workoutType: RunWorkoutType!
+    "Temperature, in degrees C."
+    tempInC: Float
+    "Weather conditions during the run."
+    weather: [WeatherCondition]
+    "Whether the run was on a treadmill or not. Defaults to false."
+    treadmill: Boolean
+    "Perceived effort level of the run. 1 is least, 5 is maximum."
+    effort: Int
+    "User rating of the run. 1 is worst, 5 is best."
+    rating: Int
+    "Whether the run has been completed or is planned. Defaults to true."
+    completed: Boolean!
+    "Finish position overall, if the run was a race."
+    racePosition: Int
+    "Number of participants overall, if the run was a race."
+    raceFieldSize: Int
+    "Finish position in age group, if the run was a race."
+    raceAgeGroupPosition: Int
+    "Number of participants in age group, if the run was a race."
+    raceAgeGroupFieldSize: Int
     "The URL of a media file associated with the run."
     media: String
     "Miscellaneious user notes describing the run."
     notes: String
+  }
+
+  """
+  Workout type options for runs.
+  """
+  enum RunWorkoutType {
+    "Default workout type if none was chosen by user."
+    DefaultRun
+    "Easy effort, usual workaday run."
+    Easy
+    "Hill repeats."
+    Hills
+    "Timed speedwork of set distance intervals."
+    Intervals
+    "Long, slow run."
+    Long
+    "A formal race."
+    Race
+    "Gentle recovery jog."
+    Recovery
+    "Hard, sustained run near the aerobic theshold."
+    Tempo
+  }
+
+  """
+  Weather condition options for runs.
+  """
+  enum WeatherCondition {
+    "Sunny."
+    SUNNY
+    "High humidity."
+    HUMID
+    "High winds."
+    WIND
+    "Snow."
+    SNOW
+    "Rain."
+    RAIN
   }
 
   extend type Profile @key(fields: "id") {
@@ -79,21 +147,16 @@ const typeDefs = gql`
   Sorting options for run connections.
   """
   enum RunOrderByInput {
-    "Order runs ascending by creation time."
-    createdAt_ASC
-    "Order runs descending by creation time."
-    createdAt_DESC
+    "Order runs ascending by date."
+    start_ASC
+    "Order runs descending by date."
+    start_DESC
   }
 
   """
   Provides a filter on which runs may be queried.
   """
   input RunWhereInput {
-    """
-    The unique username of the user viewing runs by users they follow.
-    Results include their own runs.
-    """
-    followedBy: String
     """
     Whether to include runs that have been blocked by a moderator.
     Default is true.
@@ -102,10 +165,10 @@ const typeDefs = gql`
   }
 
   """
-  Provides a search string to query runs by text in their name.
+  Provides a search string to query runs by text in their title.
   """
   input RunSearchInput {
-    "The text string to search for in the run name."
+    "The text string to search for in the run title."
     text: String!
   }
 
@@ -138,19 +201,84 @@ const typeDefs = gql`
   Provides data to create a run.
   """
   input CreateRunInput {
+    "The unique username of the user who owns the run."
+    username: String!
+    "Distance of the run, in km."
+    distance: Float!
+    "User-supplied name for the run."
+    title: String!
+    "Date and time the run began."
+    start: DateTime!
+    "Duration of the run, in ms."
+    duration: Int!
+    "Type of run workout."
+    workoutType: RunWorkoutType!
+    "Temperature, in degrees C."
+    tempInC: Float
+    "Weather conditions during the run."
+    weather: [WeatherCondition]
+    "Whether the run was on a treadmill or not. Defaults to false."
+    treadmill: Boolean
+    "Perceived effort level of the run. 1 is least, 5 is maximum."
+    effort: Int
+    "User rating of the run. 1 is worst, 5 is best."
+    rating: Int
+    "Whether the run has been completed or is planned. Defaults to true."
+    completed: Boolean!
+    "Finish position overall, if the run was a race."
+    racePosition: Int
+    "Number of participants overall, if the run was a race."
+    raceFieldSize: Int
+    "Finish position in age group, if the run was a race."
+    raceAgeGroupPosition: Int
+    "Number of participants in age group, if the run was a race."
+    raceAgeFieldSize: Int
+    "Miscellaneious user notes describing the run."
+    notes: String
     "The post's media with the stream, filename, mimetype and encoding."
     media: Upload
-    "The body content of the post (max 256 characters)."
-    text: String!
-    "The unique username of the user who authored the post."
-    username: String!
   }
 
   """
   Provides data to update a run.
   """
   input UpdateRunInput {
-    
+    "The unique username of the user who owns the run."
+    username: String!
+    "Distance of the run, in km."
+    distance: Float!
+    "User-supplied name for the run."
+    title: String!
+    "Date and time the run began."
+    start: DateTime!
+    "Duration of the run, in ms."
+    duration: Int!
+    "Type of run workout."
+    workoutType: RunWorkoutType!
+    "Temperature, in degrees C."
+    tempInC: Float
+    "Weather conditions during the run."
+    weather: [WeatherCondition]
+    "Whether the run was on a treadmill or not. Defaults to false."
+    treadmill: Boolean
+    "Perceived effort level of the run. 1 is least, 5 is maximum."
+    effort: Int
+    "User rating of the run. 1 is worst, 5 is best."
+    rating: Int
+    "Whether the run has been completed or is planned. Defaults to true."
+    completed: Boolean!
+    "Finish position overall, if the run was a race."
+    racePosition: Int
+    "Number of participants overall, if the run was a race."
+    raceFieldSize: Int
+    "Finish position in age group, if the run was a race."
+    raceAgeGroupPosition: Int
+    "Number of participants in age group, if the run was a race."
+    raceAgeFieldSize: Int
+    "Miscellaneious user notes describing the run."
+    notes: String
+    "The post's media with the stream, filename, mimetype and encoding."
+    media: Upload
   }
 
   """
