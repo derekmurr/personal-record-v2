@@ -132,9 +132,9 @@ class RunDataSource extends DataSource {
     return deletedRun._id;
   }
 
-  async updateRun(data, { id }) {
+  async updateRun(id, data) {
     return await this.Run.findOneAndUpdate(
-      { id },
+      { _id: id },
       data,
       { new: true }
     );
@@ -143,7 +143,7 @@ class RunDataSource extends DataSource {
   async searchRuns({ after, first, searchString }, info) {
     const sort = { score: { $meta: "textScore" }, _id: -1 };
     const filter = {
-      $title: { $search: searchString },
+      $text: { $search: searchString },
       blocked: { $in: [null, false] }
     };
     const queryArgs = { after, first, filter, sort };

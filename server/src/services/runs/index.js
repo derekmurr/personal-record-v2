@@ -7,6 +7,7 @@ import initMongoose from "../../config/mongoose";
 import { initDeleteProfileQueue, onDeleteProfile } from "./queues";
 import permissions from "./permissions";
 import Run from "../../models/Run";
+import Profile from "../../models/Profile";
 import resolvers from "./resolvers";
 import typeDefs from "./typeDefs";
 
@@ -32,7 +33,7 @@ import typeDefs from "./typeDefs";
     },
     dataSources: () => {
       return {
-        runAPI: new RunDataSource({ Run })
+        runAPI: new RunDataSource({ Run, Profile })
       };
     }
   });

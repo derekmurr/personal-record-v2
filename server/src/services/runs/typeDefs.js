@@ -124,7 +124,7 @@ const typeDefs = gql`
   }
 
   """
-  A list of post edges with pagination information.
+  A list of run edges with pagination information.
   """
   type RunConnection {
     "A list of run edges."
@@ -139,7 +139,7 @@ const typeDefs = gql`
   type RunEdge {
     "A cursor for use in pagination."
     cursor: ID!
-    "A post at the end of an edge."
+    "A run at the end of an edge."
     node: Run!
   }
 
@@ -243,41 +243,39 @@ const typeDefs = gql`
   Provides data to update a run.
   """
   input UpdateRunInput {
-    "The unique username of the user who owns the run."
-    username: String!
-    "Distance of the run, in km."
-    distance: Float!
-    "User-supplied name for the run."
-    title: String!
-    "Date and time the run began."
-    start: DateTime!
-    "Duration of the run, in ms."
-    duration: Int!
-    "Type of run workout."
-    workoutType: RunWorkoutType!
-    "Temperature, in degrees C."
+    "Updated distance of the run, in km."
+    distance: Float
+    "Updated user-supplied name for the run."
+    title: String
+    "Updated date and time the run began."
+    start: DateTime
+    "Updated duration of the run, in ms."
+    duration: Int
+    "Updated type of run workout."
+    workoutType: RunWorkoutType
+    "Updated temperature, in degrees C."
     tempInC: Float
-    "Weather conditions during the run."
+    "Updated weather conditions during the run."
     weather: [WeatherCondition]
-    "Whether the run was on a treadmill or not. Defaults to false."
+    "Updates whether the run was on a treadmill or not. Defaults to false."
     treadmill: Boolean
-    "Perceived effort level of the run. 1 is least, 5 is maximum."
+    "Updated perceived effort level of the run. 1 is least, 5 is maximum."
     effort: Int
-    "User rating of the run. 1 is worst, 5 is best."
+    "Updated user rating of the run. 1 is worst, 5 is best."
     rating: Int
-    "Whether the run has been completed or is planned. Defaults to true."
-    completed: Boolean!
-    "Finish position overall, if the run was a race."
+    "Updates whether the run has been completed or is planned. Defaults to true."
+    completed: Boolean
+    "Updated finish position overall, if the run was a race."
     racePosition: Int
-    "Number of participants overall, if the run was a race."
+    "Updated number of participants overall, if the run was a race."
     raceFieldSize: Int
-    "Finish position in age group, if the run was a race."
+    "Updated finish position in age group, if the run was a race."
     raceAgeGroupPosition: Int
-    "Number of participants in age group, if the run was a race."
+    "Updated number of participants in age group, if the run was a race."
     raceAgeFieldSize: Int
-    "Miscellaneious user notes describing the run."
+    "Updated miscellaneious user notes describing the run."
     notes: String
-    "The post's media with the stream, filename, mimetype and encoding."
+    "Updated run's associated media with the stream, filename, mimetype and encoding."
     media: Upload
   }
 

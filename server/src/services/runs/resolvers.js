@@ -29,7 +29,7 @@ const resolvers = {
       return dataSources.runAPI.getRunById(id, info);
     },
     runs(parent, args, { dataSources }, info) {
-      return dataSources.runsAPI.getRuns(args, info);
+      return dataSources.runAPI.getRuns(args, info);
     },
     searchRuns(
       parent,
@@ -51,8 +51,8 @@ const resolvers = {
     deleteRun(parent, { where: { id } }, { dataSources }, info) {
       return dataSources.runAPI.deleteRun(id);
     },
-    updateRun(parent, { where: { id } }, { dataSources }, info) {
-      return dataSources.runAPI.updateRun(data);
+    updateRun(parent, { data, where: { id } }, { dataSources }, info) {
+      return dataSources.runAPI.updateRun(id, data);
     },
     toggleRunBlock(parent, { where: { id } }, { dataSources }, info) {
       return dataSources.runAPI.toggleRunBlock(id);
