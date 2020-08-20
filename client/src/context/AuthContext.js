@@ -15,7 +15,9 @@ import { GET_VIEWER } from "../graphql/queries";
 import history from "../routes/history";
 
 const AuthContext = createContext();
+
 const useAuth = () => useContext(AuthContext);
+
 // It's important to specify the GraphQL endpoint as an audience
 // value in the options object passed to createAuth0Client, to
 // ensure we receive an access token back from Auth0 in JWT format
