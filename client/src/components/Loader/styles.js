@@ -13,13 +13,12 @@ const rotate = keyframes`
 `;
 
 const StyledLoader = styled.div`
-  ${prop =>
-    prop.center &&
-    "left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%);"}
+  width: 36px;
+  height: 36px;
 
   svg {
     animation: ${rotate} 1.5s infinite;
-    fill: ${prop.color};
+    fill: rgba(255, 255, 255, 0.8);
   }
 `;
 

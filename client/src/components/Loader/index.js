@@ -3,15 +3,10 @@ import React from "react";
 
 import StyledLoader from "./styles";
 
-const Loader = ({ center, color }) => (
-  <StyledLoader center={center}>
+const Loader = () => (
+  <StyledLoader>
     <ImSpinner6 />
   </StyledLoader>
 );
-
-Loader.defaultProps = {
-  center: false,
-  color: "rgba(255, 255, 255, 0.8)",
-};
 
 export default Loader;
