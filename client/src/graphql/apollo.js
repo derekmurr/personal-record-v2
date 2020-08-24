@@ -51,9 +51,9 @@ const createApolloClient = getToken => {
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
-      graphQLErrors.forEach(({ extensions: { serviceName }, message, path }) =>
+      graphQLErrors.forEach(({ extensions: { serviceName }, message }) =>
         console.error(
-          `[GraphQL error]: Message ${message}, Service: ${serviceName}, Path: ${path[0]}`
+          `[GraphQL error]: Message ${message}, Service: ${serviceName}`
         )
       );
     }

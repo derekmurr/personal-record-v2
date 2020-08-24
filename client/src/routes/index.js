@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router";
 import AccountSettings from "../pages/Settings/Account";
 import Index from "../pages/Index";
 import Home from "../pages/Home";
+import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import PrivateRoute from "../components/PrivateRoute";
 import Profile from "../pages/Profile";
@@ -13,6 +14,8 @@ const Routes = () => (
   <Switch>
     <Route exact path="/" component={Index} />
     <PrivateRoute exact path="/home" component={Home} />
+    <Route exact path="/login" component={Login} />
+    <PrivateRoute exact path="/profile/:username" component={Profile} />
     <PrivateRoute
       exact
       path="/settings/profile"

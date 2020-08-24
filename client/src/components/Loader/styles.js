@@ -13,11 +13,12 @@ const rotate = keyframes`
 `;
 
 const StyledLoader = styled.div`
-  width: 36px;
-  height: 36px;
+  width: 52px;
+  height: 52px;
+  margin: 6rem auto;
 
   svg {
-    animation: ${rotate} 1.5s infinite;
+    animation: ${rotate} 4s infinite;
     fill: rgba(255, 255, 255, 0.8);
   }
 `;

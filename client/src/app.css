@@ -1,0 +1,22 @@
+  @font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-display: swap;
+    src: local('Roboto Condensed Regular'), local('Roboto-Condensed-Regular'),
+      url('assets/fonts/RobotoCondensed-Regular.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Roboto Condensed Italic';
+    font-style: italic;
+    font-display: swap;
+    src: local('Roboto Condensed Italic'), local('Roboto-Condensed-Italic'),
+      url('assets/fonts/RobotoCondensed-Italic.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-display: swap;
+    src: local('Roboto Slab'), local('Roboto-slab'),
+      url('assets/fonts/RobotoSlab-VariableFont.ttf') format('truetype');
+  }
+

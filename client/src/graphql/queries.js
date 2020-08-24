@@ -50,20 +50,11 @@ export const GET_PROFILE = gql`
 
 export const GET_PROFILE_CONTENT = gql`
   query GET_PROFILE_CONTENT(
-    $followingCursor: String
     $runsCursor: String
     $username: String!
   ) {
     profile(username: $username) {
-      id
-      following(first: 30, after: $followingCursor) {
-        edges {
-          node {
-            ...basicProfile
-          }
-        }
-        ...profilesNextPage
-      }
+      ...basicProfile
       runs(first: 30, after: $runsCursor) {
         edges {
           node {
@@ -77,7 +68,6 @@ export const GET_PROFILE_CONTENT = gql`
   ${basicProfile}
   ${basicRun}
   ${runsNextPage}
-  ${profilesNextPage}
 `;
 
 // The id fields are added both the main query and the sub-query 

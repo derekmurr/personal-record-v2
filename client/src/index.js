@@ -8,6 +8,8 @@ import GlobalStyle from "./styles/global";
 import history from "./routes/history";
 import Routes from "./routes";
 
+import './app.css';
+
 const App = () => (
   <AuthProvider>
     <ApolloProviderWithAuth>
