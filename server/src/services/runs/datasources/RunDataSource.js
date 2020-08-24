@@ -36,12 +36,12 @@ class RunDataSource extends DataSource {
   ) {
     let filter = {};
     // Parse the "raw" filter argument into something MongoDB can use.
-    if (rawFilter && rawFilter.followedBy) {
+    if (rawFilter && rawFilter.username) {
       // Because we only have a username to work with, we fetch the profile
-      // first, and use its _id and following fields to specify what user
-      // IDs we're searching for in the runs collection.
+      // first, and use its _id field to specify what user IDs we're searching 
+      // for in the runs collection.
       const profile = await this.Run.findOne({
-        username: rawFilter.followedBy
+        username: rawFilter.username
       }).exec();
 
       if (!profile) {
@@ -49,7 +49,7 @@ class RunDataSource extends DataSource {
       }
 
       filter.userProfileId = {
-        $in: [...profile.following, profile._id]
+        $in: [profile._id]
       };
     }
 

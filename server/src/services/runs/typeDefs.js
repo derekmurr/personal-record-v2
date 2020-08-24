@@ -157,6 +157,8 @@ const typeDefs = gql`
   Provides a filter on which runs may be queried.
   """
   input RunWhereInput {
+    "The unique username of the user whose runs are being queried"
+    username: String
     """
     Whether to include runs that have been blocked by a moderator.
     Default is true.

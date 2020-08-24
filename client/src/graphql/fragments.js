@@ -12,7 +12,7 @@ export const basicRun = gql`
     title
     distance
     workoutType
-    isCompleted
+    completed
     start
   }
 `;
@@ -31,7 +31,7 @@ export const fullRun = gql`
     distance
     start
     workoutType
-    isCompleted
+    completed
     duration
     tempInC
     weather
