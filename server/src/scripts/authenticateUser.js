@@ -7,3 +7,6 @@ import getToken from "../lib/getToken";
   });
   console.log(access_token);
 })();
+
+// To get a token for use in GraphQL Playground, run this from the server directory
+// node -r dotenv/config -r esm src/scripts/authenticateUser.js derekmurr@gmail.com superHARDpa55!

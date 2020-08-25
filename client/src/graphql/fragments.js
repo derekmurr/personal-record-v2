@@ -3,11 +3,6 @@ import { gql } from "@apollo/client";
 export const basicRun = gql`
   fragment basicRun on Run {
     id
-    user {
-      avatar
-      fullName
-      username
-    }
     isBlocked
     title
     distance
@@ -20,11 +15,6 @@ export const basicRun = gql`
 export const fullRun = gql`
   fragment fullRun on Run {
     id
-    user {
-      avatar
-      fullName
-      username
-    }
     createdAt
     isBlocked
     title

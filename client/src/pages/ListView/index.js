@@ -13,10 +13,11 @@ import { TitleBlock } from "../../elements";
 
 const ListView = () => {
   const value = useAuth();
+  const { fullName, username } = value.viewerQuery.data.viewer.profile;
 
   const { data, fetchMore, loading } = useQuery(GET_PROFILE_CONTENT, {
     variables: {
-      username: value.viewerQuery.data.viewer.profile.username
+      username
     }
   });
 
@@ -30,39 +31,36 @@ const ListView = () => {
         <Loader />
       </MainLayout>
     )
-  } else if (data) {
-    const { runs } = data;
-      return (
-        <MainLayout>
-          <SubNav />
-          <TitleBlock>
-            <h1>All runs</h1>
-          </TitleBlock>
-          <RunList runData={runs.edges} />
-          {runs.pageInfo.hasNextPage && (
-            <button 
-              onClick={() => {
-                fetchMore({
-                  variables: { cursor: runs.pageInfo.endCursor },
-                  updateQuery: (previousResult, { fetchMoreResult }) =>
-                    updateFieldPageResults(
-                      "runs",
-                      fetchMoreResult,
-                      previousResult
-                    )
-                })
-              }}
-            >
-              Load more
-            </button>
-          )}
-        </MainLayout>
-      );
-  } else {
-    return (
-      <p>hello</p>
-    );
   }
+
+  const { runs } = data.profile;
+  
+  return (
+    <MainLayout>
+      <SubNav />
+      <TitleBlock>
+        <h1>{fullName ? `${fullName}'s ` : "All "} runs</h1>
+      </TitleBlock>
+      <RunList runData={runs.edges} username={username} />
+      {runs.pageInfo.hasNextPage && (
+        <button
+          onClick={() => {
+            fetchMore({
+              variables: { cursor: runs.pageInfo.endCursor },
+              updateQuery: (previousResult, { fetchMoreResult }) =>
+                updateFieldPageResults(
+                  "runs",
+                  fetchMoreResult,
+                  previousResult
+                )
+            })
+          }}
+        >
+          Load more
+        </button>
+      )}
+    </MainLayout>
+  );
 };
 
 export default ListView;

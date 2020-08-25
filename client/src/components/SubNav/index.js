@@ -14,7 +14,7 @@ const SubNav = () => {
     <Navigation>
       <NavUl>
         <li>
-          <NavLink exact to="/"><FiHome /><span>Dashboard</span></NavLink>
+          <NavLink exact to="/home"><FiHome /><span>Dashboard</span></NavLink>
         </li>
         <li>
           <NavLink to="/calendar"><FiCalendar /><span>Calendar</span></NavLink>
@@ -33,7 +33,7 @@ const SubNav = () => {
 export default SubNav;
 
 const Navigation = styled.nav`
-  margin: 0 auto;
+  margin: 0 auto 2rem;
   padding: 2rem 0;
 
   a {

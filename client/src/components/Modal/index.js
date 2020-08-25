@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Portal } from '../utilities';
+import { Portal } from '../../utilities';
 
 const Modal = ({ children, toggle, on }) => {
   return (

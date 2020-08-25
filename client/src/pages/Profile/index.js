@@ -8,6 +8,7 @@ import Loader from "../../components/Loader";
 import MainLayout from "../../layouts/MainLayout";
 import NotFound from "../NotFound";
 import ProfileData from "../../components/ProfileData";
+import SubNav from "../../components/SubNav";
 import { TitleBlock } from "../../elements";
 
 const Profile = ({ match }) => {
@@ -42,6 +43,7 @@ const Profile = ({ match }) => {
     // If the query is loading, show our loader component
     return (
       <MainLayout>
+        <SubNav />
         <Loader centered />
       </MainLayout>
     );
@@ -49,6 +51,7 @@ const Profile = ({ match }) => {
     // Once the query is finished and the profile data exists, show profile
     return (
       <MainLayout>
+        <SubNav />
         <TitleBlock><h1>User Profile</h1></TitleBlock>
         <ProfileData profileData={data.profile} refetchProfile={refetch} />
       </MainLayout>

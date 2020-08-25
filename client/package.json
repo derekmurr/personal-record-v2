@@ -23,6 +23,7 @@
     "react-icons": "^3.11.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.3",
+    "recharts": "^1.8.5",
     "styled-components": "^4.4.1",
     "styled-reset": "^4.0.8",
     "validator": "^12.1.0"

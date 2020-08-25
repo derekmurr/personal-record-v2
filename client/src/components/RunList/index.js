@@ -1,4 +1,8 @@
 import React from "react";
+import styled from "styled-components";
+
+import RunListItem from "../RunListItem";
+import { colors } from "../../styles";
 
 const RunList = ({ runData }) => {
   if (!runData.length) {
@@ -10,11 +14,21 @@ const RunList = ({ runData }) => {
 
   return (
     <ul>
-      {runData.map(run => (
-        <li key={run.id}>{ run.distance }</li>
-      ))}
+      <ListHeader>
+        <h2>Showing all runs, most recent first</h2>
+        <p>Search</p>
+      </ListHeader>
+      {runData.map(run => <RunListItem key={run.node.id} run={run.node} /> )}
     </ul>
   );
 };
 
 export default RunList;
+
+const ListHeader = styled.li`
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid ${colors.primary};
+  padding-bottom: 1rem;
+`;
+

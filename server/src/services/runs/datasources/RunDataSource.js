@@ -40,7 +40,7 @@ class RunDataSource extends DataSource {
       // Because we only have a username to work with, we fetch the profile
       // first, and use its _id field to specify what user IDs we're searching 
       // for in the runs collection.
-      const profile = await this.Run.findOne({
+      const profile = await this.Profile.findOne({
         username: rawFilter.username
       }).exec();
 
