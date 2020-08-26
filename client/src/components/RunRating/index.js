@@ -38,7 +38,7 @@ const RatingHeader = styled.h4`
   font-weight: 100;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 1.4rem;
+  font-size: var(--step--1);
   margin-bottom: 1.4rem;
 `;
 
@@ -60,7 +60,7 @@ const RatingContainer = styled.div`
 
 const RatingNumber = styled.p`
   font-family: var(--font-heading);
-  font-size: 3.4rem;
+  font-size: var(--step-4);
   font-weight: 800;
   margin: -2px 0 0 -2px;
   color: var(--ratingcolor);

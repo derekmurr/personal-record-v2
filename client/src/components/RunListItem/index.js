@@ -62,7 +62,7 @@ const ListRow = styled.li`
 
 const ListText = styled.div`
   font-family: var(--font-condensed);
-  font-size: 1.8rem;
+  font-size: var(--step-0);
   color: ${colors.white};
   display: flex;
   flex-wrap: wrap;
@@ -84,7 +84,8 @@ const ListText = styled.div`
 
 const RunTitle = styled.h2`
   flex-basis: 100%;
-  font-size: 2rem;
+  font-size: var(--step-1);
+  font-weight: 600;
   margin-bottom: 1rem;
 `;
 
@@ -108,11 +109,12 @@ const RunType = styled.p`
 const EditDiv = styled.div`
   color: ${colors.linkPrimary};
   flex-shrink: 0;
-  font-size: 2rem;
+  font-size: var(--step-1);
   padding: 0;
   margin-right: 1rem;
   
   & > a {
+    color: ${colors.linkPrimary};
     padding: 1rem;
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 4px;
@@ -131,7 +133,7 @@ const EditDiv = styled.div`
   }
 
   & span {
-    font-size: 1.4rem;
+    font-size: var(--step--1);
     margin-inline-start: 1rem;
   }
 

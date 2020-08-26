@@ -30,5 +30,12 @@ const ListHeader = styled.li`
   justify-content: space-between;
   border-bottom: 2px solid ${colors.primary};
   padding-bottom: 1rem;
+
+  h2 {
+    font-size: var(--step-0);
+  }
+  p {
+    font-size: var(--step-0);
+  }
 `;
 

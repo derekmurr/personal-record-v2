@@ -16,11 +16,11 @@ const SectionTwo = () => {
         <HalfSection>
           <h2>Welcome back</h2>
           <p>Hello again! Want to jump right in and log your workouts? You’ll have to log in first. Want to sign up for a free account? Same button!</p>
-          <button onClick={login}>Log in / Sign up</button>
+          <LoginButton onClick={login}>Log in / Sign up</LoginButton>
         </HalfSection>
         <HalfSection>
           <h2>What’s new?</h2>
-          <p>August 26, 2020: Full re-write of the database and server-side code, featuring more secure sign-in - laying the groundwork for future additions! Note that the calendar view is offline while I re-write it to make it better!</p>
+          <p>August 26, 2020: Full re-write of the database and server-side code, featuring more secure sign-in: laying the groundwork for future additions. Note that the calendar view is offline while we re-write it to make it better!</p>
         </HalfSection>
       </FlexContainer>
     </SecondSection>
@@ -72,5 +72,28 @@ const HalfSection = styled.div`
 
   @media(max-width: ${breakpoints.mobile}) {
     flex-basis: unset;
+  }
+`;
+
+const LoginButton = styled.button`
+  appearance: none;
+  background-color: ${colors.secondary};
+  border: none;
+  border-radius: 4px;
+  color: ${colors.white};
+  font-family: var(--font-heading);
+  font-size: 2.1rem;
+  padding: 1rem 2.4rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+
+  &:hover,
+  &:focus {
+    background-color: ${colors.primary};
+    text-decoration-color: ${colors.white};
   }
 `;

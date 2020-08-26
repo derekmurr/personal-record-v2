@@ -64,7 +64,7 @@ const RunTypeContainer = styled.div`
 
 const RunTypeLabel = styled.p`
   font-family: var(--font-heading);
-  font-size: 3.4rem;
+  font-size: var(--step-5);
   font-weight: 800;
   margin: 0;
 `;

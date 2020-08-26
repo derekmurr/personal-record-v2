@@ -22,7 +22,16 @@ export default Footer;
 const FooterSection = styled.footer`
   background-color: ${colors.backgroundDark};
   padding: 2rem 0;
-  font-size: 1.4rem;
+  font-size: var(--step--1);
+
+  a {
+    color: ${colors.linkPrimary};
+  }
+  a:hover,
+  a:focus {
+    outline: none;
+    text-decoration-color: ${colors.linkPrimary};
+  }
 `;
 
 const FlexContainer = styled.div`
@@ -30,5 +39,8 @@ const FlexContainer = styled.div`
   justify-content: space-between;
   @media(max-width: ${breakpoints.mobile}) {
     flex-direction: column;
+    > p + p {
+      margin-top: 1.4rem;
+    }
   }
 `;

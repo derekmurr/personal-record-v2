@@ -36,7 +36,7 @@ const ProfileSettings = ({ history }) => {
           <ModalCard>
             <p>
               {profile
-                ? "Update your user information below:"
+                ? "Update your user profile below:"
                 : "Please create your user profile before proceeding:"}
             </p>
             {profile ? (
@@ -69,10 +69,16 @@ const ModalWrapper = styled.div`
 `;
 
 const ModalCard = styled.div`
-  max-width: 500px;
-  min-width: 320px;
+  width: 95%;
+  max-width: 600px;
+  min-width: 300px;
   z-index: 15;
   padding: 15px;
+
+  p {
+    font-size: var(--step-1);
+    margin-bottom: 2.4rem;
+  }
 `;
 
 const Background = styled.div`

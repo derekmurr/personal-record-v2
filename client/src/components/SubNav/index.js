@@ -34,26 +34,34 @@ export default SubNav;
 
 const Navigation = styled.nav`
   margin: 0 auto 2rem;
-  padding: 2rem 0;
+  padding: 1rem 0 2rem;
 
   a {
     color: ${colors.white};
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-family: var(--font-condensed);
-    font-size: 2.1rem;
+    font-size: var(--step-2);
     text-decoration: none;
     padding-bottom: 0.75rem;
     border-bottom: 2px solid transparent;
-    transition: border-bottom 0.3s ease;
+    transition: border-bottom 0.3s ease, color 0.3s ease;
   }
   a:hover,
   a:focus {
+    color: ${colors.linkPrimary};
     border-bottom: 2px solid ${colors.primary};
+    outline: none;
   }
   & a.active {
     border-bottom: 2px solid ${colors.primary};
   }
   a svg {
     margin-right: 2rem;
+  }
+  span {
+    font-size: var(--step-1);
   }
 
   @media(max-width: ${breakpoints.mobile}) {

@@ -1,5 +1,4 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 import { colors } from "../../styles"
@@ -12,9 +11,7 @@ const Header = () => {
     <SiteHeader>
       <Wrapper>
         <FlexContainer>
-          <NavLink exact to="/">
-            <HeaderLogo />
-          </NavLink>
+          <HeaderLogo />
           <NavBar />
         </FlexContainer>
       </Wrapper>
@@ -27,5 +24,5 @@ export default Header;
 const SiteHeader = styled.header`
   background-color: ${colors.background};
   border-bottom: 3px solid ${colors.primary};
-  padding: 1rem 0;
+  padding: 2rem 0;
 `;

@@ -89,12 +89,12 @@ const AuthProvider = ({ children }) => {
         setCheckingSession(false);
       }
     };
-    // The function passed to useEffect cannot be made asyc, b/c
+    // The function passed to useEffect cannot be made async, b/c
     // useEffect cannot return a promise, and async functions 
     // always return promises. We get around that by passing uE 
     // an anonymous function, then defining and immediately 
     // calling our async function inside that anon func. It needs
-    // to be asyc so we can wait for our client object's methods
+    // to be async so we can wait for our client object's methods
     // to resolve.
     initializeAuth0();
   }, []);

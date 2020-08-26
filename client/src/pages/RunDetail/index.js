@@ -18,7 +18,7 @@ import RunWeather from "../../components/RunWeather";
 import SubNav from "../../components/SubNav";
 import { Toggle } from "../../utilities";
 
-import { TitleBlock, BigNumbers, Units, RunDetailSubhead } from "../../elements";
+import { TitleBlock, BigNumbers, Units, RunDetailSubhead, BigButton } from "../../elements";
 import { colors, breakpoints } from "../../styles";
 
 const RunDetail = ({ match }) => {
@@ -52,6 +52,10 @@ const RunDetail = ({ match }) => {
     totalHours = (totalHours < 10) ? "0" + totalHours : totalHours;
     totalMinutes = (totalMinutes < 10) ? "0" + totalMinutes : totalMinutes;
     totalSeconds = (totalSeconds < 10) ? "0" + totalSeconds : totalSeconds;
+    const durationString = totalHours === "00" 
+      ? `${totalMinutes}:${totalSeconds}`
+      : `${totalHours}:${totalMinutes}:${totalSeconds}`;
+
 
     let displayDistance = run.distance.toString();
     if (displayDistance && !displayDistance.includes('.')) {
@@ -75,21 +79,26 @@ const RunDetail = ({ match }) => {
               )}
           </DateContainer>
 
-          <WeatherContainer>
-            {run.tempInC && run.completed && (
+          {run.tempInC && run.completed && (
+            <WeatherContainer>
               <p>{run.tempInC}°C</p>
-            )}
-            {run.weather.length > 0 && run.completed && (
-              <WeatherList>
-                {run.weather.map(condition => (
-                  <li key={`weather-${condition}`} title={condition}>
-                    <RunWeather weatherCondition={condition} />
-                  </li>
-                ))}
-              </WeatherList>
-            )}
-            {run.completed === false && <p>This is a planned run.</p>}
-          </WeatherContainer>
+              {run.weather.length > 0 && run.completed && (
+                <WeatherList>
+                  {run.weather.map(condition => (
+                    <li key={`weather-${condition}`} title={condition}>
+                      <RunWeather weatherCondition={condition} />
+                    </li>
+                  ))}
+                </WeatherList>
+              )}
+            </WeatherContainer>
+          )}
+
+          {run.completed === false && (
+            <WeatherContainer>
+              <p>This is a planned run.</p>
+            </WeatherContainer>
+          )}
 
           <DistanceContainer>
             <RunDetailSubhead>Distance:</RunDetailSubhead>
@@ -100,8 +109,8 @@ const RunDetail = ({ match }) => {
           {run.completed && (
             <DurationContainer>
               <RunDetailSubhead>Duration:</RunDetailSubhead>
-              <BigNumbers>{`${totalHours}:${totalMinutes}:${totalSeconds}`}</BigNumbers>
-              <Units>hh:mm:ss</Units>
+              <BigNumbers>{durationString}</BigNumbers>
+              <Units>{totalHours !== "00" && "hh:"}mm:ss</Units>
             </DurationContainer>
           )}
           {run.completed && (
@@ -161,7 +170,7 @@ const RunDetail = ({ match }) => {
             <Toggle>
               {({ on, toggle }) => (
                 <>
-                  <button type='button' onClick={toggle}>Delete run</button>
+                  <DeleteButton type='button' onClick={toggle}>Delete run</DeleteButton>
                   <Modal on={on} toggle={toggle}>
                     <DeleteRun toggle={toggle} runId={run.id} />
                   </Modal>
@@ -169,7 +178,7 @@ const RunDetail = ({ match }) => {
               )}
             </Toggle>
 
-            <Link to={`/runs/${run.id}/edit`}>Edit run</Link>
+            <EditButton as={Link} to={`/runs/${run.id}/edit`}>Edit run</EditButton>
           </EditDeleteContainer>
         </RunDetailSection>
       </MainLayout>
@@ -183,10 +192,11 @@ const RunDetail = ({ match }) => {
 export default RunDetail;
 
 const RunDetailSection = styled.section`
-  padding: 8rem 0;
+  padding: 0 0 4rem;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 2rem;
+  grid-column-gap: 2rem;
+  grid-row-gap: 3.6rem;
 
   @media(max-width: ${breakpoints.mobilemed}) {
     grid-template-columns: 1fr 1fr;
@@ -207,11 +217,16 @@ const DateContainer = styled.div`
   display: flex;
   align-items: center;
 
+  h3 {
+    font-size: var(--step-1);
+    font-weight: 600;
+  }
+
   > * {
     margin-block: 0;
   }
   svg {
-    font-size: 2.4rem;
+    font-size: var(--step-3);
     margin-inline-end: 2.4rem;
   }
 
@@ -227,7 +242,7 @@ const WeatherContainer = styled.div`
 
   p {
     font-weight: 800;
-    font-size: 2.4rem;
+    font-size: var(--step-0);
     margin-inline-end: 3rem;
     margin-block: 0;
   }
@@ -308,7 +323,7 @@ const NotesContainer = styled.div`
 
   p {
     font-family: var(--font-condensed);
-    font-size: 1.8rem;
+    font-size: var(--step-0);
     font-weight: 100;
     line-height: 1.6;
   }
@@ -332,11 +347,10 @@ const DurationContainer = styled.div`
 const PaceContainer = styled.div`
   @media(max-width: ${breakpoints.mobilemed}) {
     grid-column: 1 / 2;
-    grid-row: 5 / 6;
   }
   @media(max-width: ${breakpoints.mobilesmall}) {
     grid-column: 2 / -1;
-    grid-row: 4 / 5;
+    grid-row: 2 / 3;
   }
 `;
 
@@ -346,5 +360,25 @@ const WorkoutTypeContainer = styled.div`
   }
   @media(max-width: ${breakpoints.mobilesmall}) {
     grid-row: 7 / 8;
+  }
+`;
+
+const EditButton = styled(BigButton)`
+  background-color: ${colors.hills};
+
+  &:hover,
+  &:focus {
+    background-color: ${colors.secondary};
+  }
+`;
+
+const DeleteButton = styled(BigButton)`
+  background-color: ${colors.danger};
+
+  &:hover,
+  &:focus {
+    background-color: ${colors.secondary};
+    color: ${colors.white};
+    text-decoration-color: ${colors.white};
   }
 `;

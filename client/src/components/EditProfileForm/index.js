@@ -7,6 +7,8 @@ import { GET_VIEWER } from "../../graphql/queries";
 import { UPDATE_PROFILE } from "../../graphql/mutations";
 import { updateProfileRunUser } from "../../lib/updateQueries";
 import Loader from "../Loader";
+import { colors } from "../../styles";
+import { BigButton, ModalCard, InputContainer, FormLabel, TextInput } from "../../elements";
 
 const EditProfileForm = ({ profileData, updateViewer }) => {
   const [imageFile, setImageFile] = useState();
@@ -66,77 +68,81 @@ const EditProfileForm = ({ profileData, updateViewer }) => {
     // the timer if the component un-mounts
     const timer = setTimeout(() => {
       setShowSavedMessage(false);
-    }, 3000);
+    }, 4000);
     return () => {
       clearTimeout(timer);
     };
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor="username">Pick a unique username:</label>
-        <input
-          name="username"
-          id="username"
-          type="text"
-          ref={register({ required: true, pattern: /^[A-Za-z\d_]*$/ })} />
-        {errors.username?.type === "required" && <span>This field is required</span>}
-        {errors.username?.type === "validate" && <span>Alphanumeric characters only</span>}
-        {error && error.message.includes("duplicate key") && <span>Username is already in use</span>}
-      </div>
+    <ModalCard>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <InputContainer>
+          <FormLabel htmlFor="username">Pick a unique username:</FormLabel>
+          <TextInput
+            name="username"
+            id="username"
+            type="text"
+            ref={register({ required: true, pattern: /^[A-Za-z\d_]*$/ })} />
+          {errors.username?.type === "required" && <span>This field is required</span>}
+          {errors.username?.type === "validate" && <span>Alphanumeric characters only</span>}
+          {error && error.message.includes("duplicate key") && <span>Username is already in use</span>}
+        </InputContainer>
 
-      <div>
-        <label htmlFor="fullName">Your full name:</label>
-        <input name="fullName" id="fullName" type="text" ref={register} />
-      </div>
+        <InputContainer>
+          <FormLabel htmlFor="fullName">Your full name:</FormLabel>
+          <TextInput name="fullName" id="fullName" type="text" ref={register} />
+        </InputContainer>
 
-      <div>
-        <label htmlFor="description">A short bio or description about yourself:</label>
-        <textarea name="description" id="description" ref={register}></textarea>
-      </div>
+        <InputContainer>
+          <FormLabel htmlFor="description">A short bio or description about yourself:</FormLabel>
+          <TextInput as="textarea" name="description" id="description" ref={register}></TextInput>
+        </InputContainer>
 
-      <div>
-        <label htmlFor="avatarInput">Avatar (choose a square image for best results):</label>
-        <input 
-          type="file" 
-          name="avatarInput" 
-          id="avatarInput" 
-          onChange={event => {
-            setImageFile(
-              event.target.files.length
-                ? URL.createObjectURL(event.target.files[0])
-                : null
-            );
-          }} 
-          ref={register(
-            { validate: value => {
-              if (value.files) {
-                const { files: [file] } = value;
-                if (file && file.size > 2 * 1024 * 1024) {
-                  return "Maximum file size is 2 MB";
-                }
-              }
-            }}
-          )} 
-          accept=".png, .jpg, .jpeg" 
-        />
-        <Avatar>
-          <img
-            src={imageFile || profileData.avatar}
-            alt={`${formState.fullName}'s avatar`}
-          />
-        </Avatar>
-      </div>
+        <InputContainer>
+          <FormLabel htmlFor="avatarInput">Avatar (choose a square image for best results):</FormLabel>
+          <AvatarContainer>
+            <Avatar>
+              <img
+                src={imageFile || profileData.avatar}
+                alt={`${formState.fullName}'s avatar`}
+              />
+            </Avatar>
+            <input
+              type="file" 
+              name="avatarInput" 
+              id="avatarInput" 
+              onChange={event => {
+                setImageFile(
+                  event.target.files.length
+                    ? URL.createObjectURL(event.target.files[0])
+                    : null
+                );
+              }} 
+              ref={register(
+                { validate: value => {
+                  if (value.files) {
+                    const { files: [file] } = value;
+                    if (file && file.size > 2 * 1024 * 1024) {
+                      return "Maximum file size is 2 MB";
+                    }
+                  }
+                }}
+              )} 
+              accept=".png, .jpg, .jpeg" 
+            />
+          </AvatarContainer>
+        </InputContainer>
 
-      <FlexContainer>
-        {loading && <Loader />}
-        {showSavedMessage && <p>Changes saved!</p>}
-        <button disabled={loading} type="submit">
-          Save Profile
-        </button>
-      </FlexContainer>
-    </form>
+        <FlexContainer>
+          {loading && <Loader />}
+          {showSavedMessage && <SaveMessage>Changes saved!</SaveMessage>}
+          <SubmitButton disabled={loading} type="submit">
+            Save Profile
+          </SubmitButton>
+        </FlexContainer>
+      </form>
+    </ModalCard>
   );
 };
 
@@ -151,15 +157,36 @@ const FlexContainer = styled.div`
   }
 `;
 
+const AvatarContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
+
 const Avatar = styled.div`
   align-self: start;
   width: 36px;
   height: 36px;
   border-radius: 50%;
   overflow: hidden;
-  margin-left: 2rem;
+  margin-right: 2rem;
 
   & > img {
     object-fit: cover;
   }
+`;
+
+const SubmitButton = styled(BigButton)`
+  background-color: ${colors.confirm};
+
+  &:hover,
+  &:focus {
+    background-color: ${colors.secondary};
+  }
+`;
+
+const SaveMessage = styled.p`
+  color: ${colors.confirm};
+  font-size: var(--step-1);
+  font-weight: 600;
+  margin-right: 2rem;
 `;

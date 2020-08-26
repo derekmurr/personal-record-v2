@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 import { useAuth } from "../../context/AuthContext";
@@ -7,28 +7,25 @@ import { colors } from "../../styles";
 
 const NavBar = () => {
   const { login, logout, viewerQuery } = useAuth();
-  const history = useHistory();
   const location = useLocation();
 
-  const { profile } = viewerQuery.data.viewer;
+  let displayName;
+  if (viewerQuery && viewerQuery.data) {
+    displayName = viewerQuery.data.viewer.profile.fullName 
+      ? viewerQuery.data.viewer.profile.fullName.split(" ")[0] 
+      : viewerQuery.data.viewer.profile.username;
+  }
 
   return (
     <nav>
       <MainMenu>
         {location.pathname !== "/" ? (
-          <li>Welcome ${profile.username}!</li>
+          <li>Welcome, {displayName}!</li>
         ) : (
           <li>Welcome!</li>
         )}
         <li>
-          <LogoutButton onClick={() => {
-            history.push(`/profile/${viewerQuery.data.viewer.profile.username}`);
-          }}>
-            My Profile
-          </LogoutButton>
-        </li>
-        <li>
-          {profile ? (
+          {viewerQuery && viewerQuery.data ? (
             <LogoutButton onClick={logout}>
               Logout
             </LogoutButton>
@@ -47,6 +44,7 @@ export default NavBar;
 
 const MainMenu = styled.ul`
   list-style: none;
+  font-size: var(--step-0);
   display: flex;
   justify-content: flex-end;
   margin: 0;
@@ -64,6 +62,10 @@ const LogoutButton = styled.button`
   border: none;
   color: ${colors.white};
   cursor: pointer;
+  font-family: var(--font-condensed);
+  font-size: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
   margin: 0;
   padding: 0;
   text-decoration: underline;
@@ -73,6 +75,7 @@ const LogoutButton = styled.button`
   &:focus,
   &:hover {
     color: ${colors.linkPrimary};
+    outline: none;
     text-decoration-color: ${colors.linkPrimary};
   }
 `;
