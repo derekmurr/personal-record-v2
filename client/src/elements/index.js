@@ -17,6 +17,24 @@ export const Wrapper = styled.div`
     max-width: 1100px;
 `;
 
+export const GridWrapper = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 4% repeat(12, 1fr) 4%;
+  grid-column-gap: 1%;
+
+  @media(max-width: ${breakpoints.tablet}) {
+    grid-template-columns: 4% repeat(8, 1fr) 4%;
+    grid-column-gap: 1%;
+  }
+
+  @media(max-width: ${breakpoints.mobile}) {
+    grid-template-columns: 3% repeat(6, 1fr) 3%;
+    grid-column-gap: 2%;
+  }
+`;
+
 export const FlexContainer = styled.div`
   display: flex;
   justify-content: space-between;

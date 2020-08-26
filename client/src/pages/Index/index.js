@@ -3,14 +3,12 @@ import { Redirect } from "react-router-dom";
 
 import { useAuth } from "../../context/AuthContext";
 import Loader from "../../components/Loader";
+import MainLayout from "../../layouts/MainLayout";
+import IndexHero from "../../components/IndexHero";
+import IndexSection from "../../components/IndexSection";
 
 const Index = () => {
-  const {
-    checkingSession,
-    isAuthenticated,
-    login,
-    viewerQuery
-  } = useAuth();
+  const { checkingSession, isAuthenticated, viewerQuery } = useAuth();
   let viewer;
 
   if (viewerQuery && viewerQuery.data) {
@@ -26,12 +24,10 @@ const Index = () => {
   }
 
   return (
-    <div>
-      <h2>
-        Hello, world
-      </h2>
-      <button onClick={login}>Loggins</button>
-    </div>
+    <MainLayout>
+      <IndexHero />
+      <IndexSection />
+    </MainLayout>
   );
 };
 
