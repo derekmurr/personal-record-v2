@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { colors, breakpoints } from "../styles";
 
@@ -136,5 +136,86 @@ export const TextInput = styled.input`
     border: none;
     box-shadow: none;
     border-bottom: 3px solid ${colors.danger};
+  }
+`;
+
+const clickhighlight = keyframes`
+  0% {
+    width: 40px;
+    height: 40px;
+    margin-left: -6px;
+    margin-top: -10px;
+    opacity: 0.35;
+  }
+  100% {
+    width: 100px;
+    height: 100px;
+    margin-left: -40px;
+    margin-top: -50px;
+    opacity: 0.0;
+  }
+`;
+
+export const Checkbox = styled.input`
+  position: absolute;
+  opacity: 0;
+  left: -9999px;
+
+  &:focus + label::before,
+  &:hover + label::before {
+    border-color: ${colors.primary};
+  }
+
+  &:focus + label,
+  &:hover + label {
+    color: ${colors.primary};
+  }
+
+  &:checked + label::before {
+    color: var(--color-primary);
+  }
+
+  &:checked + .checkLabel::after {
+    content: '';
+    display: block;
+    position: absolute;
+    background: var(--color-primary);
+    z-index: 5;
+    left: 0;
+    top: 0;
+    border-radius: 50%;
+    animation: ${clickhighlight} 0.65s;
+  }
+`;
+
+export const CheckboxLabel = styled.label`
+  color: ${colors.white};
+  font-family: var(--font-condensed);
+  font-size: var(--step-0);
+  letter-spacing: 0.05rem;
+  margin-bottom: 1rem;
+  padding: 0;
+  padding-left: 3.4rem;
+  display: block;
+  position: relative;
+  cursor: pointer;
+  transition: color 0.3s ease;
+
+  &::before {
+    content: '\2716';
+    font-size: var(--step-1);
+    font-weight: 800;
+    color: ${colors.backgroundDark};
+    display: grid;
+    place-items: center;
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    left: 0;
+    bottom: 0;
+    border-radius: 4px;
+    background-color: ${colors.backgroundDark};
+    border: 1px solid ${colors.white};
+    transition: color 0.3s ease, border-color 0.3s ease;
   }
 `;

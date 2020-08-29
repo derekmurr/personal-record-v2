@@ -1,5 +1,6 @@
 import React from "react";
 
+import AddRunForm from "../../components/AddRunForm";
 import MainLayout from "../../layouts/MainLayout";
 import { TitleBlock } from "../../elements";
 
@@ -9,6 +10,7 @@ const AddRun = () => {
       <TitleBlock>
         <h1>Add New Run</h1>
       </TitleBlock>
+      <AddRunForm />
     </MainLayout>
   );
 };
