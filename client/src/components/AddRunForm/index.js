@@ -42,14 +42,64 @@ const AddRunForm = () => {
     ]
   });
 
-  const { register, handleSubmit, errors, formState } = useForm();
+  const { register, handleSubmit, errors, formState, setValue, watch } = useForm({
+    defaultValues: {
+      year: currentDateTime.getFullYear(),
+      month: currentDateTime.getMonth(),
+      day: currentDateTime.getDate(),
+      hour: currentDateTime.getHours(),
+      minute: currentDateTime.getMinutes(),
+      completed: true,
+      elapsedHours: 0,
+      elapsedMinutes: 0,
+      elapsedSeconds: 0,
+      distance: 0
+    }
+  });
+
+  const watchCompleted = watch("completed");
+  const watchWorkoutType = watch("workoutType");
+  const watchDistance = watch("distance")
+
+  const checkDate = () => {
+    const chosenDateTime = Date.UTC(formState.year, formState.month, formState.day, formState.hour, formState.minute);
+    if (chosenDateTime > currentDateTime.getTime()) {
+      setValue("completed", false);
+    }
+  }
 
   const onSubmit = data => {
-    const formattedData = {};
+    const weather = data.weather 
+      ? data.weather.filter(item => item !== false)
+      : [];
+    const assignedTitle = data.title || `${Math.floor(data.distance)}km ${data.workoutType}`;
+    const duration = 
+      data.elapsedSeconds * 1000 + data.elapsedMinutes * 60 * 1000 + data.elapsedHours * 60 * 60 * 1000;
+    const chosenDateTime = Date.UTC(data.year, data.month, data.day, data.hour, data.minute);
+    const sentDate = new Date(chosenDateTime).toISOString();
+
+    const formattedData = {
+      completed: data.completed,
+      distance: Number(data.distance),
+      duration,
+      effort: data.effort && Number(data.effort),
+      notes: data.notes && data.notes,
+      racePosition: data.racePosition && Number(data.racePosition),
+      raceFieldSize: data.raceFieldSize && Number(data.raceFieldSize),
+      raceAgeGroupPosition: data.raceAgeGroupPosition && Number(data.raceAgeGroupPosition),
+      raceAgeGroupFieldSize: data.raceAgeGroupFieldSize && Number(data.raceAgeGroupFieldSize),
+      rating: data.rating && Number(data.rating),
+      start: sentDate,
+      tempInC: data.tempInC ? Number(data.tempInC) : 0,
+      title: assignedTitle,
+      treadmill: data.treadmill,
+      weather,
+      workoutType: data.workoutType, 
+      username
+    };
 
     createRun({
-      variables: { data: formattedData },
-      where: { username }
+      variables: { data: formattedData }
     }).catch(err => {
       console.log(err);
     });
@@ -57,17 +107,18 @@ const AddRunForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
+      <CheckboxContainer>
         <Checkbox 
           type="checkbox" 
           name="completed" 
           id="completed"
+          checked={formState.completed}
           ref={register} />
         <CheckboxLabel htmlFor="completed">Has this run been completed?</CheckboxLabel>
-        { formState.completed === false && (
-          <p>This is a planned workout. More data can be entered once it is marked as completed.</p>
+        {watchCompleted === false && (
+          <p>This is a planned workout. More data can be entered once it is marked as completed. Runs with a date in the future are automatically conisdered planned.</p>
         )}
-      </div>
+      </CheckboxContainer>
 
       <InputContainer>
         <FormLabel htmlFor="distance">Distance:</FormLabel>
@@ -130,17 +181,12 @@ const AddRunForm = () => {
               <FormLabel htmlFor="elapsedSeconds">ss</FormLabel>
             </InputContainer>
           </FlexLeft>
-        {errors.elapsedMinutes?.type === "required" || errors.elapsedSeconds?.type === "required" && (
-          <DurationError>
-            <ErrorText>This field is required!</ErrorText>
-          </DurationError>
-        )}
       </div>
 
       <InputContainer>
           <FormLabel htmlFor="workoutType">Workout type:</FormLabel>
           <select name="workoutType" id="workoutType" ref={register}>
-            <option value="defaultRun">Default</option>
+            <option value="DefaultRun">Default</option>
             <option value="Easy">Easy</option>
             <option value="Recovery">Recovery</option>
             <option value="Hills">Hills</option>
@@ -151,7 +197,7 @@ const AddRunForm = () => {
           </select>
       </InputContainer>
 
-      {formState.workoutType === "Race" && formState.completed === true && (
+      {watchWorkoutType === "Race" && watchCompleted === true && (
         <div role="group" aria-labelledby="raceLegend">
           <Legend id="raceLegend">Race finish position:</Legend>
 
@@ -209,8 +255,193 @@ const AddRunForm = () => {
           type="text"
           id="title" 
           name="title" 
-          placeholder={`${formState.distance || 0}km ${formState.workoutType || "run"}`}
+          placeholder={`${watchDistance || 0}km ${watchWorkoutType && watchWorkoutType !== "DefaultRun" ? watchWorkoutType : "run"}`}
           ref={register} />
+      </InputContainer>
+
+      <div role="group" aria-labelledby="dateTimeLabel">
+        <Legend id="dateTimeLabel">Date &amp; time:</Legend>
+        <FlexLeft>
+          <InputContainer>
+            <TextInput
+              type="number"
+              id="day"
+              name="day"
+              onChange={checkDate} 
+              placeholder="1"
+              step={1}
+              min={1}
+              max={31}
+              ref={register} />
+            <FormLabel htmlFor="day">dd</FormLabel>
+          </InputContainer>
+          <InputContainer>
+            <TextInput
+              type="number"
+              id="month"
+              name="month" 
+              onChange={checkDate} 
+              placeholder="1"
+              step={1}
+              min={0}
+              max={11}
+              ref={register} />
+            <FormLabel htmlFor="month">mm</FormLabel>
+          </InputContainer>
+          <InputContainer>
+            <TextInput
+              type="number"
+              id="year"
+              name="year" 
+              onChange={checkDate} 
+              placeholder="2020"
+              step={1}
+              min={1950}
+              max={2050}
+              ref={register} />
+            <FormLabel htmlFor="year">yyyy</FormLabel>
+          </InputContainer>
+          <InputContainer>
+            <TextInput
+              type="number"
+              id="hour"
+              name="hour" 
+              onChange={checkDate} 
+              placeholder="1"
+              step={1}
+              min={0}
+              max={23}
+              ref={register} />
+            <FormLabel htmlFor="hour">hh</FormLabel>
+          </InputContainer>
+          <span>:</span>
+          <InputContainer>
+            <TextInput
+              type="number"
+              id="minute"
+              name="minute" 
+              onChange={checkDate} 
+              placeholder="1"
+              step={1}
+              min={0}
+              max={59}
+              ref={register} />
+            <FormLabel htmlFor="minute">mm</FormLabel>
+          </InputContainer>
+        </FlexLeft>
+      </div>
+
+      {watchCompleted === true && (
+        <FlexLeft>
+          <InputContainer>
+            <FormLabel htmlFor="effort">Effort (5 = max):</FormLabel>
+            <select name="effort" id="effort" ref={register}>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </InputContainer>
+
+          <InputContainer>
+            <FormLabel htmlFor="rating">Rating (5 = best):</FormLabel>
+            <select name="rating" id="rating" ref={register}>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </InputContainer>
+        </FlexLeft>
+      )}
+
+      {watchCompleted && (
+        <CheckboxContainer>
+          <Checkbox
+            type="checkbox"
+            name="treadmill"
+            id="treadmill"
+            ref={register} />
+          <CheckboxLabel htmlFor="treadmill">Treadmill?</CheckboxLabel>
+        </CheckboxContainer>
+      )}
+
+      {watchCompleted && (
+        <FlexLeft>
+          <InputContainer>
+            <FormLabel htmlFor="tempInC">Temp (°C):</FormLabel>
+            <TextInput
+              type="number"
+              id="tempInC"
+              name="tempInC"
+              placeholder="10"
+              step={0.1}
+              ref={register} />
+          </InputContainer>
+          <InputContainer>
+            <Legend id="weather">Weather conditions:</Legend>
+            <FlexLeft role="group" aria-labelledby="weather">
+              <CheckboxContainer>
+                <Checkbox
+                  type="checkbox"
+                  name="weather[0]"
+                  id="sunny"
+                  value="SUNNY"
+                  ref={register} />
+                <CheckboxLabel htmlFor="sunny">Sunny</CheckboxLabel>
+              </CheckboxContainer>
+              <CheckboxContainer>
+                <Checkbox
+                  type="checkbox"
+                  name="weather[1]"
+                  id="humid"
+                  value="HUMID"
+                  ref={register} />
+                <CheckboxLabel htmlFor="humid">Humid</CheckboxLabel>
+              </CheckboxContainer>
+              <CheckboxContainer>
+                <Checkbox
+                  type="checkbox"
+                  name="weather[2]"
+                  id="wind"
+                  value="WIND"
+                  ref={register} />
+                <CheckboxLabel htmlFor="wind">Wind</CheckboxLabel>
+              </CheckboxContainer>
+              <CheckboxContainer>
+                <Checkbox
+                  type="checkbox"
+                  name="weather[3]"
+                  id="rain"
+                  value="RAIN"
+                  ref={register} />
+                <CheckboxLabel htmlFor="rain">Rain</CheckboxLabel>
+              </CheckboxContainer>
+              <CheckboxContainer>
+                <Checkbox
+                  type="checkbox"
+                  name="weather[4]"
+                  id="snow"
+                  value="SNOW"
+                  ref={register} />
+                <CheckboxLabel htmlFor="snow">Snow</CheckboxLabel>
+              </CheckboxContainer>
+            </FlexLeft>
+          </InputContainer>
+        </FlexLeft>
+      )}
+
+      <InputContainer>
+        <FormLabel htmlFor="notes">Notes:</FormLabel>
+        <textarea 
+          name="notes" 
+          id="notes" 
+          placeholder="Add notes here. What was the workout? How did it go? Did you see a dog?"
+          ref={register}
+        >
+        </textarea>
       </InputContainer>
       
       <SubmitButton type="submit" disabled={loading}>
@@ -254,4 +485,8 @@ const Legend = styled.p`
   font-size: var(--step--1);
   font-weight: 600;
   margin-bottom: 1rem;
+`;
+
+const CheckboxContainer = styled.div`
+  position: relative;
 `;

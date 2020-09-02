@@ -234,7 +234,7 @@ const typeDefs = gql`
     "Finish position in age group, if the run was a race."
     raceAgeGroupPosition: Int
     "Number of participants in age group, if the run was a race."
-    raceAgeFieldSize: Int
+    raceAgeGroupFieldSize: Int
     "Miscellaneious user notes describing the run."
     notes: String
     "The post's media with the stream, filename, mimetype and encoding."

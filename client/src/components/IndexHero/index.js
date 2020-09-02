@@ -27,9 +27,9 @@ import { colors, breakpoints } from "../../styles";
 // })();
 
 const IndexHero = () => {
-  const handleTestLogin = () => {
-    console.log("clicky");
-  }
+  // const handleTestLogin = () => {
+  //   console.log("clicky");
+  // }
 
   return (
     <HeroSection>
@@ -95,24 +95,24 @@ const HeroPara = styled.p`
   }
 `;
 
-const TrialButton = styled.button`
-  appearance: none;
-  background-color: ${colors.primary};
-  border-radius: 4px;
-  color: ${colors.white};
-  font-family: var(--font-heading);
-  font-size: 2.1rem;
-  padding: 1rem 2.4rem;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  white-space: nowrap;
-  text-decoration: underline;
-  text-decoration-color: transparent;
+// const TrialButton = styled.button`
+//   appearance: none;
+//   background-color: ${colors.primary};
+//   border-radius: 4px;
+//   color: ${colors.white};
+//   font-family: var(--font-heading);
+//   font-size: 2.1rem;
+//   padding: 1rem 2.4rem;
+//   display: inline-flex;
+//   justify-content: center;
+//   align-items: center;
+//   white-space: nowrap;
+//   text-decoration: underline;
+//   text-decoration-color: transparent;
 
-  &:hover,
-  &:focus {
-    background-color: ${colors.secondary};
-    text-decoration-color: ${colors.white};
-  }
-`;
+//   &:hover,
+//   &:focus {
+//     background-color: ${colors.secondary};
+//     text-decoration-color: ${colors.white};
+//   }
+// `;

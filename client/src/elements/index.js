@@ -172,14 +172,14 @@ export const Checkbox = styled.input`
   }
 
   &:checked + label::before {
-    color: var(--color-primary);
+    color: ${colors.primary};
   }
 
-  &:checked + .checkLabel::after {
+  &:checked + label::after {
     content: '';
     display: block;
     position: absolute;
-    background: var(--color-primary);
+    background: ${colors.primary};
     z-index: 5;
     left: 0;
     top: 0;
@@ -202,11 +202,13 @@ export const CheckboxLabel = styled.label`
   transition: color 0.3s ease;
 
   &::before {
-    content: '\2716';
-    font-size: var(--step-1);
-    font-weight: 800;
+    content: 'x';
+    font-size: 26px;
+    font-weight: 900;
     color: ${colors.backgroundDark};
     display: grid;
+    line-height: 0;
+    padding: 0 0 4px 2px;
     place-items: center;
     position: absolute;
     width: 26px;

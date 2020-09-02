@@ -13,7 +13,6 @@ const ProfileData = ({ profileData, refetchProfile }) => {
     avatar,
     description,
     fullName,
-    id,
     username
   } = profileData;
 
@@ -21,7 +20,6 @@ const ProfileData = ({ profileData, refetchProfile }) => {
   // if the profile belongs to the currently logged-in user
   const value = useAuth();
   const {
-    isModerator: viewerIsModerator,
     profile: { username: viewerUsername }
   } = value.viewerQuery.data.viewer;
 
@@ -44,15 +42,17 @@ const ProfileData = ({ profileData, refetchProfile }) => {
         <p>{description ? description : "404: description not found."}</p>
         <p>Joined: {moment(account.createdAt).format("MMMM YYYY")}</p>
 
-        <div>
-          <EditButton
-            onClick={() => {
-              history.push("/settings/profile");
-            }}
-          >
-            Edit Profile
-          </EditButton>
-        </div>
+        {username === viewerUsername && (
+          <div>
+            <EditButton
+              onClick={() => {
+                history.push("/settings/profile");
+              }}
+            >
+              Edit Profile
+            </EditButton>
+          </div>
+        )}
       </ContentContainer>
     </FlexContainer>
   );
