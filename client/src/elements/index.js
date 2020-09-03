@@ -104,7 +104,7 @@ export const LittleButton = styled(BigButton)`
 export const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 2.4rem;
+  margin-bottom: 3.6rem;
 `;
 
 export const FormLabel = styled.label`
@@ -226,4 +226,21 @@ export const CheckboxLabel = styled.label`
     border: 1px solid ${colors.white};
     transition: color 0.3s ease, border-color 0.3s ease;
   }
+`;
+
+export const StyledSelect = styled.select`
+  appearance: none;
+  color: ${colors.white};
+  font-family: var(--font-condensed);
+  font-size: var(--step-0);
+  background: ${colors.backgroundDark};
+  border: 1px solid ${colors.white};
+  border-radius: 4px;
+  margin-bottom: 3rem;
+  padding: 1rem 0.75rem;
+  width: 85%;
+  background-image: url(../../assets/images/chevron-down-solid.svg);
+  background-repeat: no-repeat;
+  background-position: 95% center;
+  background-size: 1.4rem;
 `;

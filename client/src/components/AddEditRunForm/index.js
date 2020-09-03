@@ -16,7 +16,8 @@ import {
   BigButton, 
   Checkbox,
   CheckboxLabel, 
-  Units 
+  Units, 
+  StyledSelect 
 } from "../../elements";
 import { colors } from "../../styles";
 
@@ -79,11 +80,12 @@ const AddEditRunForm = ({ defaultRun }) => {
     };
   } else {
     const startTime = new Date(defaultRun.start);
-    const totalSeconds = Math.floor(defaultRun.duration / 1000);
-    // fix this! turn seconds into hh:mm:ss
-    const elapsedHours = 1;
-    const elapsedMinutes = 2;
-    const elapsedSeconds = 3;
+    let totalSeconds = Math.floor(defaultRun.duration / 1000);
+    const elapsedHours = Math.floor(totalSeconds / 3600);
+    totalSeconds %= 3600;
+    const elapsedMinutes = Math.floor(totalSeconds / 60);
+    const elapsedSeconds = totalSeconds % 60;
+
     defaultValues = { 
       ...defaultRun,
       elapsedSeconds, 
@@ -123,6 +125,7 @@ const AddEditRunForm = ({ defaultRun }) => {
   }, [selectedDate]);
 
   const onSubmit = data => {
+    // PICK UP HERE: duration is not updating properly on save
     const weather = data.weather 
       ? data.weather.filter(item => item !== false)
       : [];
@@ -282,7 +285,7 @@ const AddEditRunForm = ({ defaultRun }) => {
 
       <InputContainer>
           <FormLabel htmlFor="workoutType">Workout type:</FormLabel>
-          <select name="workoutType" id="workoutType" ref={register}>
+          <StyledSelect name="workoutType" id="workoutType" ref={register}>
             <option value="DefaultRun">Default</option>
             <option value="Easy">Easy</option>
             <option value="Recovery">Recovery</option>
@@ -291,7 +294,7 @@ const AddEditRunForm = ({ defaultRun }) => {
             <option value="Intervals">Intervals</option>
             <option value="Long">Long</option>
             <option value="Race">Race</option>
-          </select>
+        </StyledSelect>
       </InputContainer>
 
       {watchWorkoutType === "Race" && watchCompleted === true && (
@@ -372,24 +375,24 @@ const AddEditRunForm = ({ defaultRun }) => {
         <FlexLeft>
           <InputContainer>
             <FormLabel htmlFor="effort">Effort (5 = max):</FormLabel>
-            <select name="effort" id="effort" ref={register}>
+            <StyledSelect name="effort" id="effort" ref={register}>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
               <option value="5">5</option>
-            </select>
+            </StyledSelect>
           </InputContainer>
 
           <InputContainer>
             <FormLabel htmlFor="rating">Rating (5 = best):</FormLabel>
-            <select name="rating" id="rating" ref={register}>
+            <StyledSelect name="rating" id="rating" ref={register}>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
               <option value="5">5</option>
-            </select>
+            </StyledSelect>
           </InputContainer>
         </FlexLeft>
       )}
@@ -472,17 +475,18 @@ const AddEditRunForm = ({ defaultRun }) => {
 
       <InputContainer>
         <FormLabel htmlFor="notes">Notes:</FormLabel>
-        <textarea 
+        <TextInput 
+          as="textarea"
           name="notes" 
           id="notes" 
           placeholder="Add notes here. What was the workout? How did it go? Did you see a dog?"
           ref={register}
         >
-        </textarea>
+        </TextInput>
       </InputContainer>
       
       <SubmitButton type="submit" disabled={loading}>
-        Add run
+        { defaultRun ? "Update run" : "Add run" }
       </SubmitButton>
     </form>
   );
@@ -501,7 +505,7 @@ const SubmitButton = styled(BigButton)`
 
 const ErrorText = styled.p`
   color: ${colors.danger};
-  font-size: var(--step--1);
+  font-size: var(--step-0);
   font-weight: 600;
 `;
 
@@ -515,11 +519,12 @@ const FlexLeft = styled.div`
 `;
 
 const Legend = styled.p`
-  font-size: var(--step--1);
+  font-size: var(--step-0);
   font-weight: 600;
   margin-bottom: 1rem;
 `;
 
 const CheckboxContainer = styled.div`
   position: relative;
+  margin-bottom: 2rem;
 `;
