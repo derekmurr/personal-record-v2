@@ -21,7 +21,7 @@ const RunListItem = ({ run }) => {
       </Link>
 
       <EditDiv>
-        <Link to={`/runs/${run.id}/edit`}>
+        <Link to={`/runs/edit/${run.id}`}>
           <AiOutlineEdit aria-label="Edit"/>
           <span>Edit run</span>
         </Link>

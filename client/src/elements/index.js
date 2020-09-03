@@ -186,6 +186,12 @@ export const Checkbox = styled.input`
     border-radius: 50%;
     animation: ${clickhighlight} 0.65s;
   }
+
+  &:disabled,
+  &:disabled + label,
+  &:disabled + label::before {
+    opacity: 50%;
+  }
 `;
 
 export const CheckboxLabel = styled.label`

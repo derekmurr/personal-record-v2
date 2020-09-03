@@ -178,7 +178,7 @@ const RunDetail = ({ match }) => {
               )}
             </Toggle>
 
-            <EditButton as={Link} to={`/runs/${run.id}/edit`}>Edit run</EditButton>
+            <EditButton as={Link} to={`/runs/edit/${run.id}`}>Edit run</EditButton>
           </EditDeleteContainer>
         </RunDetailSection>
       </MainLayout>

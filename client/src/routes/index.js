@@ -35,7 +35,7 @@ const Routes = () => (
     <PrivateRoute exact path="/settings/account" component={AccountSettings} />
     <PrivateRoute exact path="/shoes" component={Shoes}/>
     <PrivateRoute exact path="/runs/add" component={AddRun}/>
-    <PrivateRoute exact path="/runs/:runId/edit" component={EditRun}/>
+    <PrivateRoute exact path="/runs/edit/:runId" component={EditRun}/>
     <PrivateRoute exact path="/runs/:runId" component={RunDetail}/>
     <PrivateRoute component={NotFound} />
   </Switch>

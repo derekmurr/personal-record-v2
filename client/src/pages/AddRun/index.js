@@ -1,16 +1,18 @@
 import React from "react";
 
-import AddRunForm from "../../components/AddRunForm";
+import AddEditRunForm from "../../components/AddEditRunForm";
 import MainLayout from "../../layouts/MainLayout";
+import SubNav from "../../components/SubNav";
 import { TitleBlock } from "../../elements";
 
 const AddRun = () => {
   return (
     <MainLayout>
+      <SubNav />
       <TitleBlock>
-        <h1>Add New Run</h1>
+        <h1>Add new run</h1>
       </TitleBlock>
-      <AddRunForm />
+      <AddEditRunForm />
     </MainLayout>
   );
 };
