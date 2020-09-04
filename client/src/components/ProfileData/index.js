@@ -43,7 +43,7 @@ const ProfileData = ({ profileData, refetchProfile }) => {
         <p>Joined: {moment(account.createdAt).format("MMMM YYYY")}</p>
 
         {username === viewerUsername && (
-          <div>
+          <ButtonContainer>
             <EditButton
               onClick={() => {
                 history.push("/settings/profile");
@@ -51,7 +51,14 @@ const ProfileData = ({ profileData, refetchProfile }) => {
             >
               Edit Profile
             </EditButton>
-          </div>
+            <EditButton
+              onClick={() => {
+                history.push("/settings/account");
+              }}
+            >
+              Account Settings
+            </EditButton>
+          </ButtonContainer>
         )}
       </ContentContainer>
     </FlexContainer>
@@ -94,8 +101,16 @@ const ContentContainer = styled.div`
     font-size: var(--step-1);
     margin-bottom: 1.8rem;
   }
-  p + div {
-    margin-top: 2.4rem;
+`;
+
+const ButtonContainer = styled.div`
+  margin: 8rem 0 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  > * + * {
+    margin-top: var(--step-5);
   }
 `;
 
