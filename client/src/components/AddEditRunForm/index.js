@@ -179,7 +179,7 @@ const AddEditRunForm = ({ defaultRun }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FlexLeft>
+      <CompletedContainer>
         <CheckboxContainer>
           <Checkbox 
             disabled={isInFuture} 
@@ -189,35 +189,51 @@ const AddEditRunForm = ({ defaultRun }) => {
             checked={formState.completed}
             ref={register} />
           <CheckboxLabel htmlFor="completed">Has this run been completed?</CheckboxLabel>
-          {watchCompleted === false && (
-            <p>This is a planned workout. More data can be entered once it is marked as completed. Runs with a date in the future are automatically conisdered planned.</p>
-          )}
         </CheckboxContainer>
-      </FlexLeft>
+        {watchCompleted === false && (
+          <CompletedPara>
+            This is a planned workout. More data can be entered once it is marked as completed. Runs with a date in the future are automatically considered planned.
+          </CompletedPara>
+        )}
+      </CompletedContainer>
+      
+      <FlexLeft>
+        <InputContainer>
+          <FormLabel htmlFor="distance">Distance:</FormLabel>
+          <TextInput 
+            type="number" 
+            id="distance" 
+            name="distance" 
+            min={0} 
+            placeholder="0.0" 
+            step="0.01" 
+            ref={register({
+              validate: {
+                positive: value => value > 0
+              }
+            })} 
+            required />
+          <Units>km</Units>
+          {errors.distance?.type === "required" && (
+            <ErrorText>This field is required!</ErrorText>
+          )}
+          {errors.distance?.type === "positive" && (
+            <ErrorText>Distance must be greater than zero!</ErrorText>
+          )}
+        </InputContainer>
 
-      <InputContainer>
-        <FormLabel htmlFor="distance">Distance:</FormLabel>
-        <TextInput 
-          type="number" 
-          id="distance" 
-          name="distance" 
-          min={0} 
-          placeholder="0.0" 
-          step="0.01" 
-          ref={register({
-            validate: {
-              positive: value => value > 0
-            }
-          })} 
-          required />
-        <Units>km</Units>
-        {errors.distance?.type === "required" && (
-          <ErrorText>This field is required!</ErrorText>
-        )}
-        {errors.distance?.type === "positive" && (
-          <ErrorText>Distance must be greater than zero!</ErrorText>
-        )}
-      </InputContainer>
+        <DateTimeContainer role="group" aria-labelledby="dateTimeLabel">
+          <FormLabel as="p" id="dateTimeLabel">Date &amp; time:</FormLabel>
+          <DatePicker
+            selected={selectedDate}
+            onChange={date => setSelectedDate(date)}
+            timeInputLabel="Time:"
+            dateFormat="MM/dd/yyyy h:mm aa"
+            showTimeInput
+          />
+          <input type="hidden" ref={register} id="startTime" name="startTime" />
+        </DateTimeContainer>
+      </FlexLeft>
 
       {watchCompleted === true && (
         <div role="group" aria-labelledby="durlabel">
@@ -236,7 +252,7 @@ const AddEditRunForm = ({ defaultRun }) => {
                   ref={register} />
                 <FormLabel htmlFor="elapsedHours">hh</FormLabel>
               </InputContainer>
-              <p>:</p>
+              <span>:</span>
               <InputContainer>
                 <TextInput
                   type="number"
@@ -251,7 +267,7 @@ const AddEditRunForm = ({ defaultRun }) => {
                   required />
                 <FormLabel htmlFor="elapsedMinutes">mm</FormLabel>
               </InputContainer>
-              <p>:</p>
+              <span>:</span>
               <InputContainer>
                 <TextInput
                   type="number"
@@ -308,7 +324,7 @@ const AddEditRunForm = ({ defaultRun }) => {
         <div role="group" aria-labelledby="raceLegend">
           <FormLabel as="p" id="raceFormLabel">Race finish position:</FormLabel>
 
-          <FlexLeft>
+          <FlexLeftWide>
             <InputContainer>
               <TextInput 
                 type="number" 
@@ -317,7 +333,7 @@ const AddEditRunForm = ({ defaultRun }) => {
                 placeholder="1"
                 step="1" 
                 ref={register} />
-              <FormLabel htmlFor="racePosition">Overall:</FormLabel>
+              <FormLabel htmlFor="racePosition">Overall</FormLabel>
             </InputContainer>
 
             <InputContainer>
@@ -328,7 +344,7 @@ const AddEditRunForm = ({ defaultRun }) => {
                 placeholder="1"
                 step="1" 
                 ref={register} />
-              <FormLabel htmlFor="raceFieldSize">Out of:</FormLabel>
+              <FormLabel htmlFor="raceFieldSize">Out of</FormLabel>
             </InputContainer>
 
             <InputContainer>
@@ -339,7 +355,7 @@ const AddEditRunForm = ({ defaultRun }) => {
                 placeholder="1"
                 step="1" 
                 ref={register} />
-              <FormLabel htmlFor="raceAgeGroupPosition">Age Group:</FormLabel>
+              <FormLabel htmlFor="raceAgeGroupPosition">Age Group</FormLabel>
             </InputContainer>
 
             <InputContainer>
@@ -350,9 +366,9 @@ const AddEditRunForm = ({ defaultRun }) => {
                 placeholder="1"
                 step="1" 
                 ref={register} />
-              <FormLabel htmlFor="raceAgeGroupFieldSize">Out of:</FormLabel>
+              <FormLabel htmlFor="raceAgeGroupFieldSize">Out of</FormLabel>
             </InputContainer>
-          </FlexLeft>
+          </FlexLeftWide>
         </div>
       )}
 
@@ -366,20 +382,8 @@ const AddEditRunForm = ({ defaultRun }) => {
           ref={register} />
       </InputContainer>
 
-      <div role="group" aria-labelledby="dateTimeLabel">
-        <FormLabel as="p" id="dateTimeLabel">Date &amp; time:</FormLabel>
-        <DatePicker 
-          selected={selectedDate} 
-          onChange={date => setSelectedDate(date)}
-          timeInputLabel="Time:"
-          dateFormat="MM/dd/yyyy h:mm aa"
-          showTimeInput
-        />
-        <input type="hidden" ref={register} id="startTime" name="startTime" />
-      </div>
-
       {watchCompleted === true && (
-        <FlexLeft>
+        <FlexLeftWide>
           <InputContainer>
             <FormLabel htmlFor="effort">Effort (5 = max):</FormLabel>
             <StyledSelect name="effort" id="effort" ref={register}>
@@ -401,22 +405,22 @@ const AddEditRunForm = ({ defaultRun }) => {
               <option value="5">5</option>
             </StyledSelect>
           </InputContainer>
-        </FlexLeft>
+        </FlexLeftWide>
       )}
 
       {watchCompleted && (
-        <CheckboxContainer>
+        <TreadmillContainer>
           <Checkbox
             type="checkbox"
             name="treadmill"
             id="treadmill"
             ref={register} />
           <CheckboxLabel htmlFor="treadmill">Treadmill?</CheckboxLabel>
-        </CheckboxContainer>
+        </TreadmillContainer>
       )}
 
       {watchCompleted && (
-        <FlexLeft>
+        <FlexLeftWide>
           <InputContainer>
             <FormLabel htmlFor="tempInC">Temp (°C):</FormLabel>
             <TextInput
@@ -477,7 +481,7 @@ const AddEditRunForm = ({ defaultRun }) => {
               </CheckboxContainer>
             </WeatherContainer>
           </InputContainer>
-        </FlexLeft>
+        </FlexLeftWide>
       )}
 
       <InputContainer>
@@ -492,9 +496,15 @@ const AddEditRunForm = ({ defaultRun }) => {
         </TextInput>
       </InputContainer>
       
-      <SubmitButton type="submit" disabled={loading}>
-        { defaultRun ? "Update run" : "Add run" }
-      </SubmitButton>
+      <ButtonContainer>
+        <CancelButton type="button" onClick={() => history.goBack()}>
+          Cancel
+        </CancelButton>
+
+        <SubmitButton type="submit" disabled={loading}>
+          { defaultRun ? "Update run" : "Add run" }
+        </SubmitButton>
+      </ButtonContainer>
     </form>
   );
 };
@@ -510,6 +520,26 @@ const SubmitButton = styled(BigButton)`
   }
 `;
 
+const CancelButton = styled(BigButton)`
+  background-color: ${colors.secondary};
+
+  &:hover,
+  &:focus {
+    background-color: ${colors.primary};
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 3.6rem;
+
+  > * + * {
+    margin-left: var(--step-5);
+  }
+`;
+
 const ErrorText = styled.p`
   color: ${colors.danger};
   font-size: var(--step-0);
@@ -521,7 +551,18 @@ const FlexLeft = styled.div`
   justify-content: flex-start;
 
   > * + * {
-    margin-left: 1rem;
+    margin-left: var(--step-0);
+  }
+
+  span {
+    position: relative;
+    top: 10px;
+  }
+`;
+
+const FlexLeftWide = styled(FlexLeft)`
+  > * + * {
+    margin-left: var(--step-5);
   }
 `;
 
@@ -530,10 +571,105 @@ const WeatherContainer = styled(FlexLeft)`
   margin-top: 2rem;
 
   > * + * {
-    margin-left: 2rem;
+    margin-left: var(--step-2);
   }
 `;
 
 const CheckboxContainer = styled.div`
   position: relative;
+`;
+
+const DateTimeContainer = styled.div`
+  flex-shrink: 0;
+  margin-left: var(--step-4);
+
+  input[type="text"] {
+    appearance: none;
+    background-color: ${colors.backgroundDark};
+    border: 1px solid ${colors.white};
+    border-radius: 4px;
+    color: ${colors.white};
+    font-family: var(--font-condensed);
+    font-size: var(--step-0);
+    letter-spacing: 0.05rem;
+    margin-bottom: 0.5rem;
+    padding: 1.25rem 0.5rem;
+    text-align: center;
+
+    &:focus,
+    &:hover {
+      outline: 1px solid ${colors.primary};
+    }
+  }
+
+  .react-datepicker {
+    color: ${colors.white};
+    background-color: ${colors.backgroundDark};
+    border: 1px solid ${colors.white};
+    font-family: var(--font-condensed);
+    font-size: var(--step-0);
+  }
+  .react-datepicker__header {
+    background-color: ${colors.background};
+  }
+  .react-datepicker__current-month,
+  .react-datepicker__day-name,
+  .react-datepicker__day {
+    color: ${colors.white};
+  }
+  .react-datepicker__current-month {
+    font-size: var(--step--1);
+    margin-bottom: 5px;
+  }
+  .react-datepicker__day,
+  .react-datepicker__day-name {
+    width: 2.4rem;
+    line-height: 1.4;
+  }
+  .react-datepicker__day:hover {
+    background-color: ${colors.secondary};
+  }
+  .react-datepicker__input-time-container {
+    text-align: center;
+    margin: 0 0 15px;
+
+    input.react-datepicker-time__input {
+      color: ${colors.white};
+      background-color: ${colors.backgroundDark};
+      border: 1px solid ${colors.white};
+      font-size: var(--step--1);
+      padding: 5px;
+      text-algn: center;
+      width: auto !important;
+    }
+  }
+`;
+
+const CompletedPara = styled.p`
+  font-size: var(--step-0);
+  letter-spacing: 0.05rem;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  padding: 0;
+`;
+
+const TreadmillContainer = styled(CheckboxContainer)`
+  margin-bottom: var(--step-5);
+`;
+
+const CompletedContainer = styled(FlexLeft)`
+  align-items: baseline;
+  margin-bottom: var(--step-4);
+  min-height: 60px;
+
+  > div {
+    flex-shrink: 0;
+    margin-right: var(--step-4);
+  }
+
+  > p {
+    flex-shrink: 1;
+    margin-left: 0;
+    margin-bottom: 0;
+  }
 `;

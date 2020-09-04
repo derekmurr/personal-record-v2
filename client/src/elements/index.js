@@ -128,6 +128,10 @@ export const TextInput = styled.input`
   padding: 1.25rem 0.5rem;
   width: 100%;
 
+  &[type="number"] {
+    max-width: 8ch;
+  }
+
   &:focus {
     outline: 1px solid ${colors.primary};
   }
@@ -182,7 +186,7 @@ export const Checkbox = styled.input`
     background: ${colors.primary};
     z-index: 5;
     left: 0;
-    top: 0;
+    top: 4px;
     border-radius: 50%;
     animation: ${clickhighlight} 0.65s;
   }
@@ -220,7 +224,7 @@ export const CheckboxLabel = styled.label`
     width: 26px;
     height: 26px;
     left: 0;
-    bottom: 0;
+    bottom: -4px;
     border-radius: 4px;
     background-color: ${colors.backgroundDark};
     border: 1px solid ${colors.white};
