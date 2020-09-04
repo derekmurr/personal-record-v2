@@ -108,7 +108,7 @@ export const InputContainer = styled.div`
 `;
 
 export const FormLabel = styled.label`
-  font-size: var(--step--1);
+  font-size: var(--step-0);
   letter-spacing: 0.05rem;
   margin-bottom: 1rem;
   padding: 0;
@@ -233,14 +233,15 @@ export const StyledSelect = styled.select`
   color: ${colors.white};
   font-family: var(--font-condensed);
   font-size: var(--step-0);
-  background: ${colors.backgroundDark};
+  background-color: ${colors.backgroundDark};
   border: 1px solid ${colors.white};
   border-radius: 4px;
   margin-bottom: 3rem;
   padding: 1rem 0.75rem;
   width: 85%;
-  background-image: url(../../assets/images/chevron-down-solid.svg);
+  max-width: 240px;
+  background-image: url("../../assets/chevron-down-solid.svg");
   background-repeat: no-repeat;
-  background-position: 95% center;
+  background-position: bottom 1.4rem right 0.75rem;
   background-size: 1.4rem;
 `;

@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { CREATE_RUN, UPDATE_RUN } from "../../graphql/mutations";
-import { GET_RUNS, GET_PROFILE_CONTENT } from "../../graphql/queries";
+import { GET_RUN, GET_RUNS, GET_PROFILE_CONTENT } from "../../graphql/queries";
 import { useAuth } from "../../context/AuthContext";
 import { 
   InputContainer, 
@@ -54,6 +54,12 @@ const AddEditRunForm = ({ defaultRun }) => {
       history.push(`/runs/${id}`);
     },
     refetchQueries: () => [
+      {
+        query: GET_RUN,
+        variables: {
+          id: defaultRun.id
+        }
+      },
       {
         query: GET_RUNS,
         variables: {
@@ -125,7 +131,6 @@ const AddEditRunForm = ({ defaultRun }) => {
   }, [selectedDate]);
 
   const onSubmit = data => {
-    // PICK UP HERE: duration is not updating properly on save
     const weather = data.weather 
       ? data.weather.filter(item => item !== false)
       : [];
@@ -174,19 +179,21 @@ const AddEditRunForm = ({ defaultRun }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <CheckboxContainer>
-        <Checkbox 
-          disabled={isInFuture} 
-          type="checkbox" 
-          name="completed" 
-          id="completed"
-          checked={formState.completed}
-          ref={register} />
-        <CheckboxLabel htmlFor="completed">Has this run been completed?</CheckboxLabel>
-        {watchCompleted === false && (
-          <p>This is a planned workout. More data can be entered once it is marked as completed. Runs with a date in the future are automatically conisdered planned.</p>
-        )}
-      </CheckboxContainer>
+      <FlexLeft>
+        <CheckboxContainer>
+          <Checkbox 
+            disabled={isInFuture} 
+            type="checkbox" 
+            name="completed" 
+            id="completed"
+            checked={formState.completed}
+            ref={register} />
+          <CheckboxLabel htmlFor="completed">Has this run been completed?</CheckboxLabel>
+          {watchCompleted === false && (
+            <p>This is a planned workout. More data can be entered once it is marked as completed. Runs with a date in the future are automatically conisdered planned.</p>
+          )}
+        </CheckboxContainer>
+      </FlexLeft>
 
       <InputContainer>
         <FormLabel htmlFor="distance">Distance:</FormLabel>
@@ -214,7 +221,7 @@ const AddEditRunForm = ({ defaultRun }) => {
 
       {watchCompleted === true && (
         <div role="group" aria-labelledby="durlabel">
-          <Legend id="durlabel">Run duration:</Legend>
+          <FormLabel as="p" id="durlabel">Run duration:</FormLabel>
             <FlexLeft>
               <InputContainer>
                 <TextInput
@@ -299,7 +306,7 @@ const AddEditRunForm = ({ defaultRun }) => {
 
       {watchWorkoutType === "Race" && watchCompleted === true && (
         <div role="group" aria-labelledby="raceLegend">
-          <Legend id="raceLegend">Race finish position:</Legend>
+          <FormLabel as="p" id="raceFormLabel">Race finish position:</FormLabel>
 
           <FlexLeft>
             <InputContainer>
@@ -360,7 +367,7 @@ const AddEditRunForm = ({ defaultRun }) => {
       </InputContainer>
 
       <div role="group" aria-labelledby="dateTimeLabel">
-        <Legend id="dateTimeLabel">Date &amp; time:</Legend>
+        <FormLabel as="p" id="dateTimeLabel">Date &amp; time:</FormLabel>
         <DatePicker 
           selected={selectedDate} 
           onChange={date => setSelectedDate(date)}
@@ -421,8 +428,8 @@ const AddEditRunForm = ({ defaultRun }) => {
               ref={register} />
           </InputContainer>
           <InputContainer>
-            <Legend id="weather">Weather conditions:</Legend>
-            <FlexLeft role="group" aria-labelledby="weather">
+            <FormLabel as="p" id="weather">Weather conditions:</FormLabel>
+            <WeatherContainer role="group" aria-labelledby="weather">
               <CheckboxContainer>
                 <Checkbox
                   type="checkbox"
@@ -468,7 +475,7 @@ const AddEditRunForm = ({ defaultRun }) => {
                   ref={register} />
                 <CheckboxLabel htmlFor="snow">Snow</CheckboxLabel>
               </CheckboxContainer>
-            </FlexLeft>
+            </WeatherContainer>
           </InputContainer>
         </FlexLeft>
       )}
@@ -518,13 +525,15 @@ const FlexLeft = styled.div`
   }
 `;
 
-const Legend = styled.p`
-  font-size: var(--step-0);
-  font-weight: 600;
-  margin-bottom: 1rem;
+const WeatherContainer = styled(FlexLeft)`
+  align-items: center;
+  margin-top: 2rem;
+
+  > * + * {
+    margin-left: 2rem;
+  }
 `;
 
 const CheckboxContainer = styled.div`
   position: relative;
-  margin-bottom: 2rem;
 `;

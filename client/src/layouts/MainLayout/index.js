@@ -36,6 +36,6 @@ const SiteWrapper = styled.div`
     margin: 0 auto;
     width: 95%;
     max-width: 1100px;
-    padding-top: 4rem;
+    padding: 4rem 0;
   }
 `;

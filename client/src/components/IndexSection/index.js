@@ -70,6 +70,12 @@ const Alert = styled.div`
 const HalfSection = styled.div`
   flex-basis: 50%;
 
+  h2 {
+    font-size: var(--step-1);
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+  }
+
   @media(max-width: ${breakpoints.mobile}) {
     flex-basis: unset;
   }
