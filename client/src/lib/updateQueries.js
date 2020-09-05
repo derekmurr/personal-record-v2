@@ -2,7 +2,7 @@ import update from "immutability-helper";
 
 import { GET_PROFILE_CONTENT, SEARCH_PROFILES } from "../graphql/queries";
 
-// Paginate a post directly:
+// Paginate a run directly:
 export function updateFieldPageResults(
   field,
   fetchMoreResult,
@@ -21,7 +21,7 @@ export function updateFieldPageResults(
     : previousResult;
 }
 
-// Updates the Apollo Client cache for posts and replies when the user
+// Updates the Apollo Client cache for runs and replies when the user
 // changes their profile (username, fullName, avatar) so we don't have to
 // re-fetch all that (potentially paginated) content from the server
 export function updateProfileRunUser(

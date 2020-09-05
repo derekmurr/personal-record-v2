@@ -92,7 +92,7 @@ class RunDataSource extends DataSource {
       const [field, direction] = sortArgs;
       sort[field] = direction === "DESC" ? -1 : 1;
     } else {
-      sort.createdAt = -1;
+      sort.start = -1;
     }
 
     return sort;

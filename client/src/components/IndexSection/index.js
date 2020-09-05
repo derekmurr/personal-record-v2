@@ -34,13 +34,13 @@ const SecondSection = styled.section`
   color: ${colors.white};
 
   p {
-    font-size: 1.85rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
+    font-size: var(--step-1);
+    line-height: 1.5;
+    margin-bottom: var(--step-1);
   }
 
   p:last-of-type {
-    margin-bottom: 4rem;
+    margin-bottom: var(--step-3);
   }
 `;
 
@@ -63,17 +63,21 @@ const FlexContainer = styled.div`
 `;
 
 const Alert = styled.div`
-  margin: 0 auto 2rem;
+  margin: 0 auto var(--step-4);
   max-width: 800px;
+
+  p {
+    font-size: var(--step-0);
+  }
 `;
 
 const HalfSection = styled.div`
-  flex-basis: 50%;
+  flex-basis: 45%;
 
   h2 {
-    font-size: var(--step-1);
+    font-size: var(--step-2);
     font-weight: 600;
-    margin-bottom: 1.2rem;
+    margin-bottom: var(--step-1);
   }
 
   @media(max-width: ${breakpoints.mobile}) {

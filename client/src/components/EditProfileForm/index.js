@@ -36,7 +36,7 @@ const EditProfileForm = ({ profileData, updateViewer }) => {
     }
   });
 
-  const { register, handleSubmit, errors, formState } = useForm({
+  const { register, handleSubmit, errors } = useForm({
     defaultValues: {
       username: profileData.username,
       description: profileData.description || "",
@@ -45,14 +45,15 @@ const EditProfileForm = ({ profileData, updateViewer }) => {
   });
   
   const onSubmit = data => {
-    const { description, fullName, username } = data;
+    const { description, fullName, username, avatarInput } = data;
+    const file = avatarInput[0];
     updateProfile({
       variables: {
         data: {
           description,
           fullName,
           username,
-          avatar: imageFile
+          ...(file && { avatar: file })
         },
         where: { username: profileData.username }
       }
@@ -84,9 +85,9 @@ const EditProfileForm = ({ profileData, updateViewer }) => {
             id="username"
             type="text"
             ref={register({ required: true, pattern: /^[A-Za-z\d_]*$/ })} />
-          {errors.username?.type === "required" && <span>This field is required</span>}
-          {errors.username?.type === "validate" && <span>Alphanumeric characters only</span>}
-          {error && error.message.includes("duplicate key") && <span>Username is already in use</span>}
+          {errors.username?.type === "required" && <ErrorText>This field is required</ErrorText>}
+          {errors.username?.type === "validate" && <ErrorText>Alphanumeric characters only</ErrorText>}
+          {error && error.message.includes("duplicate key") && <ErrorText>Username is already in use</ErrorText>}
         </InputContainer>
 
         <InputContainer>
@@ -105,7 +106,7 @@ const EditProfileForm = ({ profileData, updateViewer }) => {
             <Avatar>
               <img
                 src={imageFile || profileData.avatar}
-                alt={`${formState.fullName}'s avatar`}
+                alt={`${profileData.username}'s avatar`}
               />
             </Avatar>
             <input
@@ -189,4 +190,9 @@ const SaveMessage = styled.p`
   font-size: var(--step-1);
   font-weight: 600;
   margin-right: 2rem;
+`;
+
+const ErrorText = styled.span`
+  color: ${colors.danger};
+  margin-top: var(--step--2);
 `;

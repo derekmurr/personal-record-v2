@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 import { useAuth } from "../../context/AuthContext";
@@ -7,10 +6,9 @@ import { colors } from "../../styles";
 
 const NavBar = () => {
   const { login, logout, viewerQuery } = useAuth();
-  const location = useLocation();
 
   let displayName;
-  if (viewerQuery && viewerQuery.data) {
+  if (viewerQuery && viewerQuery.data && viewerQuery.data.viewer && viewerQuery.data.viewer.profile) {
     displayName = viewerQuery.data.viewer.profile.fullName 
       ? viewerQuery.data.viewer.profile.fullName.split(" ")[0] 
       : viewerQuery.data.viewer.profile.username;
@@ -19,7 +17,7 @@ const NavBar = () => {
   return (
     <nav>
       <MainMenu>
-        {location.pathname !== "/" ? (
+        {displayName ? (
           <li>Welcome, {displayName}!</li>
         ) : (
           <li>Welcome!</li>

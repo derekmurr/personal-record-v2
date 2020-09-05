@@ -5,7 +5,6 @@ import {
   basicProfile,
   fullRun,
   runsNextPage,
-  runsPrevPage,
   profilesNextPage
 } from "./fragments";
 
@@ -55,7 +54,7 @@ export const GET_PROFILE_CONTENT = gql`
   ) {
     profile(username: $username) {
       ...basicProfile
-      runs(first: 30, after: $runsCursor) {
+      runs(first: 10, after: $runsCursor) {
         edges {
           node {
             ...basicRun

@@ -4,15 +4,15 @@ import { WiDaySunny, WiHot, WiCloudyGusts, WiSnow, WiRain } from "react-icons/wi
 
 const RunWeather = ({ weatherCondition }) => {
   switch (weatherCondition) {
-    case "Sunny":
+    case "SUNNY":
       return <WiDaySunny />;
-    case "Humid":
+    case "HUMID":
       return <WiHot />;
-    case "Wind":
+    case "WIND":
       return <WiCloudyGusts />;
-    case "Snow":
+    case "SNOW":
       return <WiSnow />;
-    case "Rain":
+    case "RAIN":
       return <WiRain />;
     default:
       return null;

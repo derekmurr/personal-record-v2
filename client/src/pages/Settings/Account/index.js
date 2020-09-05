@@ -42,7 +42,7 @@ const AccountSettings = () => {
         <Toggle>
           {({ on, toggle }) => (
             <>
-              <DeleteButton type='button' onClick={toggle}>Delete run</DeleteButton>
+              <DeleteButton type='button' onClick={toggle}>Delete account</DeleteButton>
               <Modal on={on} toggle={toggle}>
                 <DeleteAccount toggle={toggle} accountId={viewerId} />
               </Modal>

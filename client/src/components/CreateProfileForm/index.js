@@ -1,10 +1,13 @@
 import React from "react";
 import { useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
+import styled from "styled-components";
 
 import { CREATE_PROFILE } from "../../graphql/mutations";
 import { GET_VIEWER } from "../../graphql/queries";
 import Loader from "../Loader";
+import { colors } from "../../styles";
+import { BigButton, ModalCard, InputContainer, FormLabel, TextInput } from "../../elements";
 
 const CreateProfileForm = ({ accountId, updateViewer }) => {
   // Update the Apollo Client cache with new data once this mutation has
@@ -32,8 +35,7 @@ const CreateProfileForm = ({ accountId, updateViewer }) => {
   const onSubmit = data => {
     createProfile({
       variables: { 
-        accountId, 
-        ...data 
+        data: { accountId, ...data }
       }
     }).catch(err => {
       console.log(err);
@@ -41,38 +43,46 @@ const CreateProfileForm = ({ accountId, updateViewer }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor="username">Pick a unique username:</label>
-        <input 
-          name="username" 
-          id="username" 
-          type="text" 
-          ref={register({ required: true, pattern: /^[A-Za-z\d_]*$/ })} />
-        {errors.username?.type === "required" && <span>This field is required</span>}
-        {errors.username?.type === "validate" && <span>Alphanumeric characters only</span>}
-        {error && error.message.includes("duplicate key") && <span>Username is already in use</span>}
-      </div>
+    <ModalCard>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <InputContainer>
+          <FormLabel htmlFor="username">Pick a unique username:</FormLabel>
+          <TextInput 
+            name="username" 
+            id="username" 
+            type="text" 
+            ref={register({ required: true, pattern: /^[A-Za-z\d_]*$/ })} />
+          {errors.username?.type === "required" && <span>This field is required</span>}
+          {errors.username?.type === "validate" && <span>Alphanumeric characters only</span>}
+          {error && error.message.includes("duplicate key") && <span>Username is already in use</span>}
+          </InputContainer>
 
-      <div>
-        <label htmlFor="fullName">Your full name:</label>
-        <input name="fullName" id="fullName" type="text" ref={register} />
-      </div>
+        <InputContainer>
+          <FormLabel htmlFor="fullName">Your full name:</FormLabel>
+          <TextInput name="fullName" id="fullName" type="text" ref={register} />
+        </InputContainer>
 
-      <div>
-        <label htmlFor="description">A short bio or description about yourself:</label>
-        <textarea name="description" id="description" ref={register}></textarea>
-      </div>
+        <InputContainer>
+          <FormLabel htmlFor="description">A short bio or description about yourself:</FormLabel>
+          <TextInput as="textarea" name="description" id="description" ref={register}></TextInput>
+        </InputContainer>
 
-        {loading && <Loader size="medium" />}
-        <button
-          disabled={loading}
-          type="submit"
-        >
-          Create Profile
-        </button>
-    </form>
+          {loading && <Loader />}
+          <SubmitButton disabled={loading} type="submit">
+            Create Profile
+          </SubmitButton>
+      </form>
+    </ModalCard>
   );
 };
 
 export default CreateProfileForm;
+
+const SubmitButton = styled(BigButton)`
+  background-color: ${colors.confirm};
+
+  &:hover,
+  &:focus {
+    background-color: ${colors.secondary};
+  }
+`;

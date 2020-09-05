@@ -56,14 +56,14 @@ export const runsNextPage = gql`
   }
 `;
 
-export const runsPrevPage = gql`
-  fragment runsPrevPage on RunConnection {
-    pageInfo {
-      startCursor
-      hasPrevPage
-    }
-  }
-`;
+// export const runsPrevPage = gql`
+//   fragment runsPrevPage on RunConnection {
+//     pageInfo {
+//       startCursor
+//       hasPrevPage
+//     }
+//   }
+// `;
 
 export const profilesNextPage = gql`
   fragment profilesNextPage on ProfileConnection {

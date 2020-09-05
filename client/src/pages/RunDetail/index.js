@@ -85,7 +85,7 @@ const RunDetail = ({ match }) => {
               {run.weather.length > 0 && run.completed && (
                 <WeatherList>
                   {run.weather.map(condition => (
-                    <li key={`weather-${condition}`} title={condition}>
+                    <li key={`weather-${condition}`} title={condition.toLowerCase()}>
                       <RunWeather weatherCondition={condition} />
                     </li>
                   ))}
@@ -138,11 +138,11 @@ const RunDetail = ({ match }) => {
                 </div>
 
               )}
-              {run.raceAgePosition && (
+              {run.raceAgeGroupPosition && (
                 <div>
                   <RunDetailSubhead>Age group:</RunDetailSubhead>
-                  <BigNumbers>{run.raceAgePosition}</BigNumbers>
-                  {run.raceAgeFieldSize && <Units>out of {run.raceAgeFieldSize}</Units>}
+                  <BigNumbers>{run.raceAgeGroupPosition}</BigNumbers>
+                  {run.raceAgeGroupFieldSize && <Units>out of {run.raceAgeGroupFieldSize}</Units>}
                 </div>
               )}
             </RaceInfoContainer>
@@ -269,23 +269,11 @@ const WeatherList = styled.ul`
 `;
 
 const RaceInfoContainer = styled.div`
-  grid-column: 1 / -1;
-  grid-row-start: 5;
+  grid-column: 1 / 2;
   display: flex;
 
   & > div:first-of-type {
     margin-inline-end: 6rem;
-  }
-
-  @media(max-width: ${breakpoints.tablet}) {
-    grid-row-start: 6;
-  }
-  @media(max-width: ${breakpoints.mobilemed}) {
-    grid-column: 1 / -1;
-    grid-row-start: 7;
-  }
-  @media(max-width: ${breakpoints.mobilesmall}) {
-    grid-row: 8 / 9;
   }
 `;
 

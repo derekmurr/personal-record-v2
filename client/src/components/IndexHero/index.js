@@ -75,24 +75,17 @@ const ContentBlock = styled.div`
   }
 
   h1 {
-    font-size: 3.8rem;
-    margin-bottom: 2rem;
+    font-size: var(--step-4);
+    font-weight: 600;
+    margin-bottom: var(--step-2);
   }
 `;
 
 const HeroPara = styled.p`
-  font-size: 2.2rem;
-  line-height: 1.6;
+  font-size: var(--step-1);
+  line-height: 1.5;
   letter-spacing: -0.05rem;
-  margin-bottom: 2rem;
-
-  @media(max-width: ${breakpoints.mobile}) {
-    font-size: 1.9rem;
-  }
-
-  &:last-of-type {
-    margin-bottom: 4rem;
-  }
+  margin-bottom: 0;
 `;
 
 // const TrialButton = styled.button`

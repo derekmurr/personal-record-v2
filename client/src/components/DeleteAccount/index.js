@@ -46,6 +46,7 @@ const Heading = styled.h1`
 
 const Paragraph = styled.p`
   font-size: var(--step-1);
+  line-height: 1.5;
   margin-bottom: 4.8rem;
 `;
 

@@ -60,7 +60,7 @@ const RatingContainer = styled.div`
 
 const RatingNumber = styled.p`
   font-family: var(--font-heading);
-  font-size: var(--step-4);
+  font-size: 4rem;
   font-weight: 800;
   margin: -2px 0 0 -2px;
   color: var(--ratingcolor);

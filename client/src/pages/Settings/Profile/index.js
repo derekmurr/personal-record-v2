@@ -37,7 +37,7 @@ const ProfileSettings = ({ history }) => {
             <p>
               {profile
                 ? "Update your user profile below:"
-                : "Please create your user profile before proceeding:"}
+                : "Please create your user profile before proceeding. Don't worry, you can change this stuff at any time!"}
             </p>
             {profile ? (
               <EditProfileForm
@@ -77,7 +77,8 @@ const ModalCard = styled.div`
 
   p {
     font-size: var(--step-1);
-    margin-bottom: 2.4rem;
+    line-height: 1.5;
+    margin-bottom: var(--step-2);
   }
 `;
 
