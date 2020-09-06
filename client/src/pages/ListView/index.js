@@ -4,13 +4,13 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 import { GET_PROFILE_CONTENT } from "../../graphql/queries";
-import { updateFieldPageResults } from "../../lib/updateQueries";
+import { updateSubfieldPageResults } from "../../lib/updateQueries";
 import { useAuth } from "../../context/AuthContext";
 import Loader from "../../components/Loader";
 import MainLayout from "../../layouts/MainLayout";
 import RunList from "../../components/RunList";
 import SubNav from "../../components/SubNav";
-import { TitleBlock, LittleButton } from "../../elements";
+import { TitleBlock, BigButton, LittleButton } from "../../elements";
 import { colors } from "../../styles";
 
 
@@ -47,12 +47,13 @@ const ListView = () => {
       </TitleBlock>
       <RunList runData={runs.edges} username={username} />
       {runs.pageInfo.hasNextPage && (
-        <button
+        <LoadMoreButton
           onClick={() => {
             fetchMore({
-              variables: { cursor: runs.pageInfo.endCursor },
+              variables: { runsCursor: runs.pageInfo.endCursor },
               updateQuery: (previousResult, { fetchMoreResult }) =>
-                updateFieldPageResults(
+                updateSubfieldPageResults(
+                  "profile",
                   "runs",
                   fetchMoreResult,
                   previousResult
@@ -61,7 +62,7 @@ const ListView = () => {
           }}
         >
           Load more
-        </button>
+        </LoadMoreButton>
       )}
     </MainLayout>
   );
@@ -70,6 +71,15 @@ const ListView = () => {
 export default ListView;
 
 const StyledButton = styled(LittleButton)`
+  background-color: ${colors.secondary};
+
+  &:hover,
+  &:focus {
+    background-color: ${colors.primary};
+  }
+`;
+
+const LoadMoreButton = styled(BigButton)`
   background-color: ${colors.secondary};
 
   &:hover,

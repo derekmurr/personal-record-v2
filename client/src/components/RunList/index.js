@@ -13,17 +13,21 @@ const RunList = ({ runData }) => {
 
 
   return (
-    <ul>
+    <StyledList>
       <ListHeader>
         <h2>Showing all runs, most recent first</h2>
         <p>Search</p>
       </ListHeader>
       {runData.map(run => <RunListItem key={run.node.id} run={run.node} /> )}
-    </ul>
+    </StyledList>
   );
 };
 
 export default RunList;
+
+const StyledList = styled.ul`
+  margin-bottom: 4rem;
+`;
 
 const ListHeader = styled.li`
   display: flex;
