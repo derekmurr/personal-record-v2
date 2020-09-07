@@ -31,6 +31,9 @@ const resolvers = {
     runs(parent, args, { dataSources }, info) {
       return dataSources.runAPI.getRuns(args, info);
     },
+    runsByDateRange(parent, args, { dataSources }, info) {
+      return dataSources.runAPI.getRunsByDateRange(args, info);
+    },
     searchRuns(
       parent,
       { after, first, query: { text } },

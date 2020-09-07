@@ -188,6 +188,16 @@ const typeDefs = gql`
       filter: RunWhereInput
     ): RunConnection
 
+    "Retrieves a list of runs within a specified date range."
+    runsByDateRange(
+      startDate: DateTime!
+      endDate: DateTime!
+      after: String
+      first: Int 
+      orderBy: RunOrderByInput 
+      filter: RunWhereInput
+    ): RunConnection
+
     """
     Performs a search of runs.
     Results are available in descending order by relevance only.

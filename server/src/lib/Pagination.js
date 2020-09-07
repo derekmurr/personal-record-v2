@@ -22,6 +22,7 @@ class Pagination {
       sort = {}
     } = queryArgs;
     const isSearch = this._isSearchQuery(sort);
+    const isDateRange = filter.start;
     let edges;
 
     // Handle user input errors
@@ -52,7 +53,18 @@ class Pagination {
       edges = docs.length
         ? docs.map(doc => ({ node: doc, cursor: doc._id }))
         : [];
-    } else if (first) {
+    } else if (isDateRange) { 
+      const pipeline = await this._getDatePipeline(
+        filter,
+        first,
+        sort 
+      );
+      const docs = await this.Model.aggregate(pipeline);
+
+      edges = docs.length
+        ? docs.map(doc => ({ node: doc, cursor: doc._id }))
+        : [];
+    } else if (!isDateRange && first) {
       // If "first" is supplied, then handle forward pagination. 
       // Use MongoDB's find method, passing it the filter, 
       // to grab all applicable results. Then we chain a sort method,
@@ -247,6 +259,22 @@ class Pagination {
 
     // Return our array of pipeline stages to pass into the aggregate method
     return textSearchPipeline;
+  }
+
+  // Create the aggregation pipeline for date-bound queries
+  async _getDatePipeline(
+    filter,
+    first, 
+    sort
+  ) {
+    const dateRangePipeline = [
+      { $match: filter },
+      { $sort: sort }
+    ];
+
+    dateRangePipeline.push({ $limit: first });
+
+    return dateRangePipeline;
   }
 
   // Reverse the sort direction when queries need to look in the opposite 
