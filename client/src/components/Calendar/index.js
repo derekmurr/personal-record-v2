@@ -1,13 +1,36 @@
 import React from "react";
+import { useQuery } from "@apollo/client";
 import styled from "styled-components";
 
+import { GET_RUNS_BY_DATE_RANGE } from "../../graphql/queries";
+import { useAuth } from "../../context/AuthContext";
+import Loader from "../Loader";
 import { colors } from "../../styles";
 
 const CalendarView = () => {
+  const value = useAuth();
+  const { username } = value.viewerQuery.data.viewer.profile;
+
+  const { data, loading } = useQuery(GET_RUNS_BY_DATE_RANGE, {
+    variables: {
+      filter: { username },
+      startDate: "2020-08-31T19:26:11.000Z",
+      endDate: "2020-09-05T19:25:18.891Z"
+    }
+  });
+
+  if (loading) {
+    return <Loader />
+  }
+
   return (
     <StyledSection>
       <h2>Calendar component</h2>
-      <p>Placeholder.</p>
+      <ul>
+        {data.runsByDateRange.edges.map(({ node }) => (
+          <li key={node.id}><p>{node.distance}</p><p>{node.start}</p></li>
+        ))}
+      </ul>
     </StyledSection>
   );
 };

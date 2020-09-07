@@ -32,6 +32,32 @@ export const GET_RUNS = gql`
   ${runsNextPage}
 `;
 
+export const GET_RUNS_BY_DATE_RANGE = gql`
+  query GET_RUNS_BY_DATE_RANGE(
+      $cursor: String, 
+      $filter: RunWhereInput,
+      $startDate: DateTime!,
+      $endDate: DateTime!
+    ) {
+    runsByDateRange(
+      first: 100, 
+      after: $cursor, 
+      filter: $filter, 
+      startDate: $startDate, 
+      endDate: $endDate
+    ) {
+      edges {
+        node {
+          ...basicRun
+        }
+      }
+      ...runsNextPage
+    }
+  } 
+  ${basicRun}
+  ${runsNextPage}
+`;
+
 export const GET_PROFILE = gql`
   query GET_PROFILE($username: String!) {
     profile(username: $username) {
@@ -54,7 +80,7 @@ export const GET_PROFILE_CONTENT = gql`
   ) {
     profile(username: $username) {
       ...basicProfile
-      runs(first: 10, after: $runsCursor) {
+      runs(first: 30, after: $runsCursor) {
         edges {
           node {
             ...basicRun

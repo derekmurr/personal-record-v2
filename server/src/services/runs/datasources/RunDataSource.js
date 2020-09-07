@@ -69,6 +69,47 @@ class RunDataSource extends DataSource {
     return { edges, pageInfo };
   }
 
+  async getRunsByDateRange( {
+    after, 
+    first, 
+    orderBy, 
+    startDate, 
+    endDate, 
+    filter: rawFilter
+  }, info ) {
+    let filter = {};
+    if (rawFilter && rawFilter.username) {
+      const profile = await this.Profile.findOne({
+        username: rawFilter.username
+      }).exec();
+
+      if (!profile) {
+        throw new UserInputError("User with that username cannot be found.");
+      }
+
+      filter.userProfileId = {
+        $in: [profile._id]
+      };
+    }
+
+    if (rawFilter && rawFilter.includeBlocked === false) {
+      filter.blocked = { $in: [null, false] };
+    }
+
+    filter.start = {
+      "$gte": new Date(startDate),
+      "$lte": new Date(endDate)
+    };
+    const sort = this._getContentSort(orderBy);
+    const queryArgs = { after, first, filter, sort };
+
+    const projection = getProjectionFields(info, this.Run.schema);
+    const edges = await this.runPagination.getEdges(queryArgs, projection);
+    const pageInfo = await this.runPagination.getPageInfo(edges, queryArgs);
+
+    return { edges, pageInfo };
+  }
+
   async getOwnRuns(
     { after, before, first, last, orderBy, userProfileId },
     info
