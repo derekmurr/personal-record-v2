@@ -11,14 +11,15 @@ const RunList = ({ runData }) => {
     );
   }
 
+  const runList = runData.filter(run => run.node.completed === true);
 
   return (
     <StyledList>
       <ListHeader>
-        <h2>Showing all runs, most recent first</h2>
+        <h2>All completed runs, most recent first</h2>
         <p>Search</p>
       </ListHeader>
-      {runData.map(run => <RunListItem key={run.node.id} run={run.node} /> )}
+      {runList.map(run => <RunListItem key={run.node.id} run={run.node} /> )}
     </StyledList>
   );
 };

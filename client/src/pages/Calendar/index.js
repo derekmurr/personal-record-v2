@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import MainLayout from "../../layouts/MainLayout";
@@ -15,7 +15,7 @@ const CalendarView = () => {
       <SubNav />
       <TitleBlock>
         <h1>Calendar</h1>
-        <StyledButton as={NavLink} to="/runs/add">Add new run</StyledButton>
+        <StyledButton as={Link} to="/runs/add">Add new run</StyledButton>
       </TitleBlock>
 
       <Calendar />

@@ -11,6 +11,9 @@ export default {
       runs: {
         keyArgs: ["filter"]
       },
+      runsByDateRange: {
+        keyArgs: ["filter", "startDate", "endDate"]
+      },
       searchRuns: {
         keyArgs: ["query"]
       },

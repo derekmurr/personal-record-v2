@@ -20,6 +20,7 @@ import { Toggle } from "../../utilities";
 
 import { TitleBlock, BigNumbers, Units, RunDetailSubhead, BigButton } from "../../elements";
 import { colors, breakpoints } from "../../styles";
+import { GiTrumpet } from "react-icons/gi";
 
 const RunDetail = ({ match }) => {
   const { data, loading } = useQuery(GET_RUN, {
@@ -79,10 +80,10 @@ const RunDetail = ({ match }) => {
               )}
           </DateContainer>
 
-          {run.tempInC && run.completed && (
+          {run.tempInC && run.completed === true ? (
             <WeatherContainer>
               <p>{run.tempInC}°C</p>
-              {run.weather.length > 0 && run.completed && (
+              {run.weather.length > 0 && (
                 <WeatherList>
                   {run.weather.map(condition => (
                     <li key={`weather-${condition}`} title={condition.toLowerCase()}>
@@ -92,7 +93,7 @@ const RunDetail = ({ match }) => {
                 </WeatherList>
               )}
             </WeatherContainer>
-          )}
+          ) : ( null )}
 
           {run.completed === false && (
             <WeatherContainer>
@@ -242,7 +243,7 @@ const WeatherContainer = styled.div`
 
   p {
     font-weight: 800;
-    font-size: var(--step-0);
+    font-size: var(--step-1);
     margin-inline-end: 3rem;
     margin-block: 0;
   }

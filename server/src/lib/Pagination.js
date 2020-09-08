@@ -57,7 +57,8 @@ class Pagination {
       const pipeline = await this._getDatePipeline(
         filter,
         first,
-        sort 
+        sort,
+        projection  
       );
       const docs = await this.Model.aggregate(pipeline);
 
@@ -265,10 +266,17 @@ class Pagination {
   async _getDatePipeline(
     filter,
     first, 
-    sort
+    sort, 
+    projection = "_id" 
   ) {
+    const projectionDoc = projection.split(" ").reduce((acc, field) => {
+      acc[field] = 1;
+      return acc;
+    }, {});
+
     const dateRangePipeline = [
       { $match: filter },
+      { $project: { ...projectionDoc } },
       { $sort: sort }
     ];
 
