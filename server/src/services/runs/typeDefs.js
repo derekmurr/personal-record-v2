@@ -174,6 +174,18 @@ const typeDefs = gql`
     text: String!
   }
 
+  """
+  Provides criteria to query a user's runs within a certain time range.
+  """
+  input RunDateRangeInput {
+    "The unique username of the user whose runs to query."
+    username: String!
+    "The beginning of the date range to query."
+    startDate: DateTime!
+    "The ending of the date range to query."
+    endDate: DateTime!
+  }
+
   extend type Query {
     "Retrieves a single run by MongoDB document ID."
     run(id: ID!): Run!
@@ -190,12 +202,10 @@ const typeDefs = gql`
 
     "Retrieves a list of runs within a specified date range."
     runsByDateRange(
-      startDate: DateTime!
-      endDate: DateTime!
       after: String
       first: Int 
       orderBy: RunOrderByInput 
-      filter: RunWhereInput
+      query: RunDateRangeInput
     ): RunConnection
 
     """

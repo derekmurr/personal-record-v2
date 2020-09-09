@@ -12,7 +12,7 @@ export default {
         keyArgs: ["filter"]
       },
       runsByDateRange: {
-        keyArgs: ["filter", "startDate", "endDate"]
+        keyArgs: ["query"]
       },
       searchRuns: {
         keyArgs: ["query"]

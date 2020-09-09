@@ -13,9 +13,11 @@ const CalendarView = () => {
 
   const { data, loading } = useQuery(GET_RUNS_BY_DATE_RANGE, {
     variables: {
-      filter: { username },
-      startDate: "2020-08-31T19:26:11.000Z",
-      endDate: "2020-09-05T19:25:18.891Z"
+      query: { 
+        username,
+        startDate: "2020-08-31T19:26:11.000Z",
+        endDate: "2020-09-05T19:25:18.891Z"
+      }
     }
   });
 

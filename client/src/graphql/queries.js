@@ -35,16 +35,12 @@ export const GET_RUNS = gql`
 export const GET_RUNS_BY_DATE_RANGE = gql`
   query GET_RUNS_BY_DATE_RANGE(
       $cursor: String, 
-      $filter: RunWhereInput,
-      $startDate: DateTime!,
-      $endDate: DateTime!
+      $query: RunDateRangeInput,
     ) {
     runsByDateRange(
       first: 100, 
       after: $cursor, 
-      filter: $filter, 
-      startDate: $startDate, 
-      endDate: $endDate
+      query: $query, 
     ) {
       edges {
         node {

@@ -72,15 +72,13 @@ class RunDataSource extends DataSource {
   async getRunsByDateRange( {
     after, 
     first, 
-    orderBy, 
-    startDate, 
-    endDate, 
-    filter: rawFilter
+    orderBy,  
+    query
   }, info ) {
     let filter = {};
-    if (rawFilter && rawFilter.username) {
+    if (query && query.username) {
       const profile = await this.Profile.findOne({
-        username: rawFilter.username
+        username: query.username
       }).exec();
 
       if (!profile) {
@@ -92,13 +90,13 @@ class RunDataSource extends DataSource {
       };
     }
 
-    if (rawFilter && rawFilter.includeBlocked === false) {
+    if (query && query.includeBlocked === false) {
       filter.blocked = { $in: [null, false] };
     }
 
     filter.start = {
-      "$gte": new Date(startDate),
-      "$lte": new Date(endDate)
+      "$gte": new Date(query.startDate),
+      "$lte": new Date(query.endDate)
     };
     const sort = this._getContentSort(orderBy);
     const queryArgs = { after, first, filter, sort };

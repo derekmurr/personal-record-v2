@@ -20,7 +20,6 @@ import { Toggle } from "../../utilities";
 
 import { TitleBlock, BigNumbers, Units, RunDetailSubhead, BigButton } from "../../elements";
 import { colors, breakpoints } from "../../styles";
-import { GiTrumpet } from "react-icons/gi";
 
 const RunDetail = ({ match }) => {
   const { data, loading } = useQuery(GET_RUN, {

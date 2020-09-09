@@ -29,6 +29,9 @@ const PlannedRuns = ({ runData }) => {
 export default PlannedRuns;
 
 const StyledSection = styled.section`
+  margin-bottom: var(--step-5);
+  margin-right: var(--step-4);
+
   h2 {
     font-size: var(--step-1);
     font-weight: 600;

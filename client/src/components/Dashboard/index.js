@@ -24,10 +24,9 @@ const Dashboard = () => {
 
   const { data, loading } = useQuery(GET_RUNS_BY_DATE_RANGE, {
     variables: {
-      filter: { username },
-      startDate,
-      endDate
-    }
+      query: { username, startDate, endDate }
+    },
+    fetchPolicy: "no-cache"
   });
 
   if (loading) {
@@ -54,8 +53,8 @@ const Dashboard = () => {
       </TitleBlock>
 
       <ChartBlock>
-        <DailyDistances runData={completedRuns} />
         <PlannedRuns runData={sortedUpcomingRuns} />
+        <DailyDistances runData={completedRuns} />
       </ChartBlock>
 
     </div>

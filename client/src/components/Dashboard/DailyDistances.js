@@ -1,8 +1,8 @@
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, Legend } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
 import styled from "styled-components";
 
-import { colors } from "../../styles";
+import { colors, breakpoints } from "../../styles";
 
 const DailyDistances = ({ runData }) => {
   const today = new Date();
@@ -45,29 +45,29 @@ const DailyDistances = ({ runData }) => {
     <StyledSection>
       <h2>Run distances</h2>
       <h3>Last 2 weeks</h3>
-      <BarChart
-        width={window.innerWidth > 375 ? 480 : 325}
-        height={300}
-        data={sortedRuns}
-        margin={{ top: 0, right: 30, left: -32, bottom: 5, }}
-      >
-        <XAxis dataKey="name" stroke={colors.white} fontFamily={'Roboto Condensed, sans-serif'} />
-        <YAxis stroke={colors.white} fontFamily={'Roboto Condensed, sans-serif'} />
-        <Bar dataKey="default" stackId="a" fill={colors.defaultColor} />
-        <Bar dataKey="easy" stackId="a" fill={colors.easy} />
-        <Bar dataKey="recovery" stackId="a" fill={colors.recovery} />
-        <Bar dataKey="hills" stackId="a" fill={colors.hills} />
-        <Bar dataKey="tempo" stackId="a" fill={colors.tempo} />
-        <Bar dataKey="intervals" stackId="a" fill={colors.intervals} />
-        <Bar dataKey="long" stackId="a" fill={colors.long} />
-        <Bar dataKey="race" stackId="a" fill={colors.race} />
-        <Legend
-          verticalAlign='top'
-          height={60}
-          align='left'
-          wrapperStyle={{ left: 0, top: -6, fontFamily: 'Roboto Condensed, sans-serif', width: '80%', lineHeight: '1.5' }}
-        />
-      </BarChart>
+      <ResponsiveContainer height={300} width="100%">
+        <BarChart
+          data={sortedRuns}
+          margin={{ top: 0, right: 30, left: -32, bottom: 5, }}
+        >
+          <XAxis dataKey="name" stroke={colors.white} fontFamily={'Roboto Condensed, sans-serif'} />
+          <YAxis stroke={colors.white} fontFamily={'Roboto Condensed, sans-serif'} />
+          <Bar dataKey="default" stackId="a" fill={colors.defaultColor} />
+          <Bar dataKey="easy" stackId="a" fill={colors.easy} />
+          <Bar dataKey="recovery" stackId="a" fill={colors.recovery} />
+          <Bar dataKey="hills" stackId="a" fill={colors.hills} />
+          <Bar dataKey="tempo" stackId="a" fill={colors.tempo} />
+          <Bar dataKey="intervals" stackId="a" fill={colors.intervals} />
+          <Bar dataKey="long" stackId="a" fill={colors.long} />
+          <Bar dataKey="race" stackId="a" fill={colors.race} />
+          <Legend
+            verticalAlign='top'
+            height={60}
+            align='left'
+            wrapperStyle={{ left: 0, top: -6, fontFamily: 'Roboto Condensed, sans-serif', width: '80%', lineHeight: '1.5' }}
+          />
+        </BarChart>
+      </ResponsiveContainer>
     </StyledSection>
   );
 };
@@ -75,6 +75,8 @@ const DailyDistances = ({ runData }) => {
 export default DailyDistances;
 
 const StyledSection = styled.section`
+  min-width: 500px;
+
   h2 {
     font-size: var(--step-1);
     font-weight: 600;
@@ -86,5 +88,9 @@ const StyledSection = styled.section`
     font-weight: 600;
     line-height: 1.5;
     margin-bottom: var(--step-2);
+  }
+
+  @media(max-width: ${breakpoints.mobile}) {
+    min-width: 300px;
   }
 `;
