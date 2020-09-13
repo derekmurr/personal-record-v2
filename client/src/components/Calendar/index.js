@@ -1,23 +1,27 @@
-import React, { useState } from "react";
-// import { useQuery } from "@apollo/client";
-// import moment from "moment";
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { useLazyQuery } from "@apollo/client";
 
-// import { GET_RUNS_BY_DATE_RANGE } from "../../graphql/queries";
-// import { useAuth } from "../../context/AuthContext";
-// import Loader from "../Loader";
-import { LittleButton } from "../../elements";
-import { colors } from "../../styles";
+import { GET_RUNS_BY_DATE_RANGE } from "../../graphql/queries";
+import { useAuth } from "../../context/AuthContext";
+import Loader from "../Loader";
+import CalendarMonth from "./CalendarMonth";
 
-let oneDay = 60 * 60 * 24 * 1000;
-let todayTimestamp = Date.now() - (Date.now() % oneDay) + (new Date().getTimezoneOffset() * 1000 * 60);
+// let oneDay = 60 * 60 * 24 * 1000;
+// let todayTimestamp = Date.now() - (Date.now() % oneDay) + (new Date().getTimezoneOffset() * 1000 * 60);
 
 const CalendarView = () => {
+  const value = useAuth();
+  const { username } = value.viewerQuery.data.viewer.profile;
+  const [getRuns, { loading, data }] = useLazyQuery(GET_RUNS_BY_DATE_RANGE);
+
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
-  const [selectedDay, setSelectedDay] = useState(todayTimestamp);
+  // const [selectedDay, setSelectedDay] = useState(todayTimestamp);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [monthDetails, setMonthDetails] = useState();
+
 
   const daysMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const monthMap = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -34,13 +38,15 @@ const CalendarView = () => {
     let prevMonthNumberOfDays = getNumberOfDays(prevYear, prevMonth);
     let _date = (date < 0 ? prevMonthNumberOfDays + date : date % args.numberOfDays) + 1;
     let month = date < 0 ? -1 : date >= args.numberOfDays ? 1 : 0;
-    let timestamp = new Date(args.year, args.month, _date).getTime();
+    let _month = month < 0 ? prevMonth : month > 0 ? args.month + 1 : args.month;
+    let timestamp = new Date(args.year, _month, _date).getTime();
     return {
       date: _date,
       day,
       month,
       timestamp,
-      dayString: daysMap[day]
+      dayString: daysMap[day],
+      runs: []
     }
   }
 
@@ -70,10 +76,12 @@ const CalendarView = () => {
         index++;
       }
     }
+
+    setStartDate(new Date(monthArray[0].timestamp).toISOString());
+    setEndDate(new Date(monthArray[monthArray.length - 1].timestamp).toISOString());
+
     return monthArray;
   }
-
-  const [monthDetails, setMonthDetails] = useState(getMonthDetails(year, month));
 
   // const isCurrentDay = (day) => {
   //   return day.timestamp === todayTimestamp;
@@ -127,12 +135,12 @@ const CalendarView = () => {
   //   inputRef.current.value = dateString;
   // }
 
-  const setNewYear = (offset) => {
-    let newYear = year + offset;
-    let newMonth = month;
-    setYear(newYear);
-    setMonthDetails(getMonthDetails(newYear, newMonth));
-  }
+  // const setNewYear = (offset) => {
+  //   let newYear = year + offset;
+  //   let newMonth = month;
+  //   setYear(newYear);
+  //   setMonthDetails(getMonthDetails(newYear, newMonth));
+  // }
 
   const setNewMonth = (offset) => {
     let newYear = year;
@@ -146,148 +154,53 @@ const CalendarView = () => {
     }
     setYear(newYear);
     setMonth(newMonth);
-    setMonthDetails(getMonthDetails(newYear, newMonth));
   }
 
-  // const value = useAuth();
-  // const { username } = value.viewerQuery.data.viewer.profile;
+  useEffect(() => {
+    setMonthDetails(getMonthDetails(year, month));
+  }, [year, month]);
 
-  // const { data, loading } = useQuery(GET_RUNS_BY_DATE_RANGE, {
-  //   variables: {
-  //     query: { 
-  //       username,
-  //       startDate: "2020-08-31T19:26:11.000Z",
-  //       endDate: "2020-09-05T19:25:18.891Z"
-  //     }
-  //   }
-  // });
+  useEffect(() => {
+    getRuns({
+      variables: {
+        query: { username, startDate, endDate }
+      },
+      fetchPolicy: "no-cache"
+    });
+  }, [startDate, endDate]);
 
-  // if (loading) {
-  //   return <Loader />
-  // }
+  if (loading) {
+    return <Loader />
+  } else {
+    if (data && data.runsByDateRange) {
+      const { edges } = data.runsByDateRange;
 
-  const renderCalendar = () => {
-    let days = monthDetails.map((day, index) => {
-      return (
-        <DayBox key={`day${index}`} dark={day.month !== 0}>
-          <DateContainer>
-            {day.date}
-          </DateContainer>
-        </DayBox>
-      )
-    })
+      for (let i = 0; i < edges.length; i++) {
+        // generate a timestamp that only takes into account year, month and date
+        const runFullDate = new Date(edges[i].node.start);
+        const runYear = runFullDate.getFullYear();
+        const runMonth = runFullDate.getMonth();
+        const runDay = runFullDate.getDate();
+        const runTimestamp = new Date(runYear, runMonth, runDay).getTime();
 
+        // find index of a matching timestamp in monthDetails
+        const index = monthDetails.findIndex(dayObject => dayObject.timestamp === runTimestamp);
+        // push current edge.node into the runs array at that index in monthDetails
+        if (index !== -1) {
+          monthDetails[index].runs.push(edges[i].node);
+        }
+      }
+    }
+    
     return (
-      <div>
-        <MonthHeader>
-          <h3>{getMonthStr(month)} {" "} {year}</h3>
-          <ButtonContainer>
-            <PrevNextButton 
-              type="button"
-              onClick={() => setNewMonth(-1)}
-            >
-              <AiOutlineLeft />
-            </PrevNextButton>
-            <PrevNextButton 
-              type="button"
-              onClick={() => setNewMonth(1)}
-            >
-              <AiOutlineRight />
-            </PrevNextButton>
-          </ButtonContainer>
-        </MonthHeader>
-        <WeekContainer>
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d, i) => (
-            <WeekdayHeader key={`weekdayheader${i}`}>{d}</WeekdayHeader>
-          ))}
-        </WeekContainer>
-        <WeekContainer>
-          {days}
-        </WeekContainer>
-      </div>
-    )
+      <CalendarMonth 
+        monthDetails={monthDetails}
+        month={getMonthStr(month)}
+        year={year}
+        setNewMonth={setNewMonth} 
+      />
+    );
   }
-
-  return (
-    <CalendarSection>
-      {renderCalendar()}
-    </CalendarSection>
-  );
 };
 
 export default CalendarView;
-
-const CalendarSection = styled.section`
-  padding: 10px 0;
-`;
-
-const WeekContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-`;
-
-const MonthHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding-bottom: var(--step-0);
-
-  h3 {
-    font-size: var(--step-0);
-    font-weight: 600;
-  }
-`;
-
-const WeekdayHeader = styled.div`
-  border-bottom: 1px solid ${colors.primary};
-  font-size: var(--step-0);
-  font-weight: 600;
-  padding: 0.5rem;
-  text-align: center;
-`;
-
-const DateContainer = styled.span`
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  font-size: var(--step--1);
-  font-weight: 600;
-`;
-
-const DayBox = styled.div`
-  position: relative;
-  background-color: ${props => props.dark === true ? colors.backgroundDark : colors.background};
-  border-left: 1px solid ${colors.defaultColor};
-  border-bottom: 1px solid ${colors.defaultColor};
-
-  &:nth-of-type(7n) {
-    border-right: 1px solid ${colors.defaultColor};
-  }
-
-  &:before {
-    content: "";
-    display: block;
-    padding-top: 100%;
-  }
-
-  &:hover,
-  &:focus-within {
-    box-shadow: inset 0px 0px 0px 2px ${colors.primary};
-  }
-`;
-
-const PrevNextButton = styled(LittleButton)`
-  background-color: transparent;
-
-  &:hover,
-  &:focus {
-    background-color: ${colors.primary};
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  > * + * {
-    margin-left: 2rem;
-  }
-`;
