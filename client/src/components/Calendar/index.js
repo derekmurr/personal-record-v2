@@ -157,7 +157,8 @@ const CalendarView = () => {
   }
 
   useEffect(() => {
-    setMonthDetails(getMonthDetails(year, month));
+    const newMonthArray = getMonthDetails(year, month);
+    setMonthDetails(newMonthArray);
   }, [year, month]);
 
   useEffect(() => {
