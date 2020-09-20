@@ -188,7 +188,11 @@ const CalendarView = () => {
         const index = monthDetails.findIndex(dayObject => dayObject.timestamp === runTimestamp);
         // push current edge.node into the runs array at that index in monthDetails
         if (index !== -1) {
-          monthDetails[index].runs.push(edges[i].node);
+          // Make sure current edge.node isn't already in this runs array
+          const runsArrayIndex = monthDetails[index].runs.findIndex(run => run.id === edges[i].node.id);
+          if (runsArrayIndex === -1) {
+            monthDetails[index].runs.push(edges[i].node);
+          }
         }
       }
     }

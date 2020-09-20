@@ -42,6 +42,10 @@ export default CalendarMonth;
 
 const CalendarSection = styled.section`
   padding: 10px 0;
+
+  @media (max-width: 768px) {
+    padding: 0;
+  } 
 `;
 
 const WeekContainer = styled.div`
