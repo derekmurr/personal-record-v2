@@ -68,6 +68,9 @@ const ListBox = styled.ul`
       text-decoration-color: ${colors.white};
     }
   }
+  p {
+    padding: 1.6rem;
+  }
   li {
     background-color: ${colors.background};
     transition: background-color 0.3s ease;
