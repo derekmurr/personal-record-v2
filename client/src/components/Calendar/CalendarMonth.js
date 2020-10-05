@@ -2,15 +2,22 @@ import React from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import styled from "styled-components";
 
+import { getMonthStr } from "./helpers";
 import CalendarDay from "./CalendarDay";
 import { LittleButton } from "../../elements";
 import { colors } from "../../styles";
 
-const CalendarMonth = ({ monthDetails, month, year, setNewMonth }) => {
+const CalendarMonth = ({ 
+  monthArray, 
+  currentMonth, 
+  currentYear, 
+  setNewMonth 
+}) => {
+
   return (
     <CalendarSection>
       <MonthHeader>
-        <h3>{`${month} ${year}`}</h3>
+        <h3>{`${getMonthStr(currentMonth)} ${currentYear}`}</h3>
         <ButtonContainer>
           <PrevNextButton
             type="button"
@@ -32,7 +39,7 @@ const CalendarMonth = ({ monthDetails, month, year, setNewMonth }) => {
         ))}
       </WeekContainer>
       <WeekContainer>
-        {monthDetails?.map((day, index) => <CalendarDay key={`day${index}`} day={day} />)}
+        {monthArray?.map((day, index) => <CalendarDay key={`day${index}`} day={day} />)}
       </WeekContainer>
     </CalendarSection>
   );
