@@ -5,11 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start:mongo": "mongod --config /usr/local/etc/mongod.conf",
-    "dev": "concurrently -k npm:dev:*",
-    "dev:accounts": "nodemon -r dotenv/config -r esm ./src/services/accounts/index.js",
-    "dev:profiles": "nodemon -r dotenv/config -r esm ./src/services/profiles/index.js",
-    "dev:runs": "nodemon -r dotenv/config -r esm ./src/services/runs/index.js",
-    "dev:gateway": "wait-on tcp:4001 tcp:4002 tcp:4003 && nodemon -r dotenv/config -r esm ./src/index.js"
+    "start:redis": "redis-server",
+    "dev": "npx pm2 start process.yml --watch"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +20,6 @@
     "apollo-server-express": "^2.16.0",
     "auth0": "^2.20.0",
     "cloudinary": "^1.18.1",
-    "concurrently": "^5.0.2",
     "cors": "^2.8.5",
     "dataloader": "^2.0.0",
     "dotenv": "^8.2.0",
@@ -39,10 +35,10 @@
     "jwks-rsa": "^1.6.0",
     "mongoose": "^5.7.11",
     "node-fetch": "^2.6.0",
-    "nodemon": "^1.19.4",
     "redis": "^2.8.0",
     "rsmq": "^0.11.0",
     "validator": "^12.0.0",
     "wait-on": "^4.0.0"
-  }
+  },
+  "devDependencies": {}
 }

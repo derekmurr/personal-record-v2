@@ -10,8 +10,5 @@ Clone the repo. You'll have to run npm install inside both the `/client` and `/s
 
 ## Starting the app locally
 
-To run the app, currently it's a bit of a Frankenstein's monster - in the `/server` directory, run `npm run start:mongo` to start the MongoDB driver, then run `redis-server` to start the Redis instance, then finally `npm run dev` to start the various back-end services. (There are three services: accounts, profiles and runs; they're stitched together with Apollo Federation to present one GraphQL endpoint to the client.)
+It's a Docker image – you can build the containers and launch the front- and back-end by running `docker-compose -f docker-compose.yml -f docker.compose.dev.yml up` in the terminal, in the root directory of the project. The front-end will be served at http://localhost:3000 and the back-end can be explored via GraphQL Playground at http://localhost:4000/graphql
 
-Then, in the `/client` directory, run `npm run start` to launch the front-end React client.
-
-The plan is to shortly move things to PM2 and a Docker instance to tidy all this up before deploying.
