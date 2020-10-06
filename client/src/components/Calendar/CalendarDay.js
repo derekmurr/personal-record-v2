@@ -4,20 +4,22 @@ import styled from "styled-components";
 import Event from "./Event";
 import { colors } from "../../styles";
 
-const CalendarDay = ({ day }) => {
+const CalendarDay = ({ day, setSelectedDay }) => {
   return (
     <DayBox dark={day.month !== 0}>
-      <DateContainer>
-        {day.date}
-      </DateContainer>
-      <EventContainer>
-        {day.runs?.map((run, i) => (
-          <Event 
-            run={run} 
-            key={`day${day.date}-run${i}`}
-          />
-        ))}
-      </EventContainer>
+      <TouchOverlay onClick={() => setSelectedDay(day)}>
+        <DateContainer>
+          {day.date}
+        </DateContainer>
+        <EventContainer>
+          {day.runs?.map((run, i) => (
+            <Event 
+              run={run} 
+              key={`day${day.date}-run${i}`}
+            />
+          ))}
+        </EventContainer>
+      </TouchOverlay>
     </DayBox>
   );
 };
@@ -67,5 +69,19 @@ const DayBox = styled.div`
   &:hover,
   &:focus-within {
     filter: brightness(120%) saturate(120%);
+  }
+`;
+
+const TouchOverlay = styled.div`
+  display: none;
+  
+  @media (max-width: 675px) {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
   }
 `;

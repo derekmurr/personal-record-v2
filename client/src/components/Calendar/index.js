@@ -95,6 +95,8 @@ const CalendarView = () => {
       currentMonth={currentMonth}
       currentYear={currentYear}
       setNewMonth={setNewMonth} 
+      startDate={startDate}
+      endDate={endDate}
     />
   );
 }
