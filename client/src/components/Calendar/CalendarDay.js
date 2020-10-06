@@ -7,18 +7,19 @@ import { colors } from "../../styles";
 const CalendarDay = ({ day, setSelectedDay }) => {
   return (
     <DayBox dark={day.month !== 0}>
+      <DateContainer>
+        {day.date}
+      </DateContainer>
+      <EventContainer>
+        {day.runs?.map((run, i) => (
+          <Event 
+            run={run} 
+            key={`day${day.date}-run${i}`}
+          />
+        ))}
+        <QuickAddButton><span>+</span></QuickAddButton>
+      </EventContainer>
       <TouchOverlay onClick={() => setSelectedDay(day)}>
-        <DateContainer>
-          {day.date}
-        </DateContainer>
-        <EventContainer>
-          {day.runs?.map((run, i) => (
-            <Event 
-              run={run} 
-              key={`day${day.date}-run${i}`}
-            />
-          ))}
-        </EventContainer>
       </TouchOverlay>
     </DayBox>
   );
@@ -83,5 +84,33 @@ const TouchOverlay = styled.div`
     width: 100%;
     height: 100%;
     cursor: pointer;
+  }
+`;
+
+const QuickAddButton = styled.button`
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+  flex-grow: 1;
+  color: ${colors.defaultColor};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover span,
+  &:focus span {
+    opacity: 1;
+  }
+
+  @media (max-width: 675px) {
+    display: none;
   }
 `;

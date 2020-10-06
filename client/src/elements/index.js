@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { colors, breakpoints } from "../styles";
 
 export const TitleBlock = styled.div`
-  margin-bottom: 6rem;
+  margin-bottom: var(--step-4);
   display: flex;
   justify-content: space-between;
   align-items: center;

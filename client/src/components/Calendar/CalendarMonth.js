@@ -12,11 +12,9 @@ const CalendarMonth = ({
   monthArray, 
   currentMonth, 
   currentYear, 
-  setNewMonth, 
-  startDate, 
-  endDate 
+  setNewMonth  
 }) => {
-  const [ selectedDay, setSelectedDay ] = useState();
+  const [ selectedDay, setSelectedDay ] = useState(monthArray[0]);
 
   return (
     <CalendarSection>
@@ -51,7 +49,9 @@ const CalendarMonth = ({
         />
         ))}
       </WeekContainer>
-      <MobileDay selectedDay={selectedDay, startDate, endDate} />
+      <MobileDay 
+        selectedDay={selectedDay} 
+      />
     </CalendarSection>
   );
 };

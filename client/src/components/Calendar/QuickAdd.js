@@ -4,8 +4,9 @@ import { useMutation } from "@apollo/client";
 import styled from "styled-components";
 
 import { CREATE_RUN } from "../../graphql/mutations";
-import { GET_RUNS, GET_PROFILE_CONTENT, GET_RUNS_BY_DATE_RANGE } from "../../graphql/queries";
+import { GET_RUNS, GET_PROFILE_CONTENT } from "../../graphql/queries";
 import { useAuth } from "../../context/AuthContext";
+import { getMonthStr } from "./helpers";
 import {
   BigButton, 
   InputContainer,
@@ -18,13 +19,16 @@ import {
 } from "../../elements";
 import { colors } from "../../styles";
 
-const QuickAdd = ({ toggle, timestamp, startDate, endDate }) => {
+const QuickAdd = ({ toggle, timestamp }) => {
   const today = new Date();
   const fullDate = new Date(timestamp);
   const completed = today >= fullDate;
   const month = getMonthStr(fullDate.getMonth());
 
-  const { register, handleSubmit, errors, setValue } = useForm();
+  const { register, handleSubmit, errors, setValue, watch } = useForm();
+  const watchSeconds = watch("elapsedSeconds");
+  const watchMinutes = watch("elapsedMinutes");
+  const watchHours = watch("elapsedHours");
 
   const value = useAuth();
   const { username } = value.viewerQuery.data.viewer.profile;
@@ -43,10 +47,6 @@ const QuickAdd = ({ toggle, timestamp, startDate, endDate }) => {
       {
         query: GET_PROFILE_CONTENT,
         variables: { username }
-      },
-      {
-        query: GET_RUNS_BY_DATE_RANGE,
-        variables: { username, startDate, endDate }
       }
     ]
   });
@@ -65,7 +65,7 @@ const QuickAdd = ({ toggle, timestamp, startDate, endDate }) => {
       completed,
       distance: Number(data.distance),
       duration: Number(data.duration) || 0,
-      start: selectedDate.toISOString(),
+      start: fullDate.toISOString(),
       title: assignedTitle,
       username,
       workoutType: data.workoutType
@@ -81,7 +81,9 @@ const QuickAdd = ({ toggle, timestamp, startDate, endDate }) => {
   return (
     <ModalCard>
       <Heading>Quick add run</Heading>
-      <p>{`${month} ${fullDate.getDate()}, ${fullDate.getFullYear}`}</p>
+      <Subheading>
+        {`${month} ${fullDate.getDate()}, ${fullDate.getFullYear()}`}
+      </Subheading>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputContainer>
@@ -161,14 +163,8 @@ const QuickAdd = ({ toggle, timestamp, startDate, endDate }) => {
                 name="duration" 
                 ref={register(
                   { validate: {
-                    positive: value => {
-                      if (Number(value) > 0 && watchCompleted === true) {
-                        return true;
-                      } else if (watchCompleted === false) {
-                        return true;
-                      }
-                      return false;
-                    } }
+                    positive: value => Number(value) > 0 
+                  }
                   }
                 )} 
               />
@@ -198,7 +194,6 @@ const QuickAdd = ({ toggle, timestamp, startDate, endDate }) => {
           <AddButton
             type="submit" 
             disabled={loading}
-            onClick={}
           >
             Add run
           </AddButton>
@@ -213,7 +208,13 @@ export default QuickAdd;
 const Heading = styled.h2`
   font-size: var(--step-2);
   font-weight: 600;
-  margin-bottom: 2.4rem;
+  margin-bottom: var(--step--1);
+`;
+
+const Subheading = styled.h3`
+  font-size: var(--step-1);
+  font-weight: 600;
+  margin-bottom: var(--step-2);
 `;
 
 const AddButton = styled(BigButton)`

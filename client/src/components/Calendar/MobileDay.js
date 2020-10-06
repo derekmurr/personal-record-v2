@@ -9,13 +9,14 @@ import QuickAdd from "./QuickAdd";
 import { Toggle } from "../../utilities";
 import { colors } from "../../styles";
 
-const MobileDay = ({ selectedDay, startDate, endDate }) => {
+const MobileDay = ({ selectedDay }) => {
   const fullDate = new Date(selectedDay.timestamp);
   const month = getMonthStr(fullDate.getMonth());
+
   return (
     <DayContainer>
-      <div>
-        <h4>{`${month} ${fullDate.getDate()}, ${fullDate.getFullYear}`}</h4>
+      <ListContainer>
+        <h4>{`${month} ${fullDate.getDate()}, ${fullDate.getFullYear()}`}</h4>
         {selectedDay.runs.length > 0 && (
           <ul>
             {selectedDay.runs.map(run => (
@@ -27,18 +28,24 @@ const MobileDay = ({ selectedDay, startDate, endDate }) => {
             ))}
           </ul>
         )}
-      </div>
+      </ListContainer>
       <div>
         <Toggle>
           {({ on, toggle }) => (
             <>
-              <QuickAddButton type='button' onClick={toggle}>Quick add</QuickAddButton>
+              <QuickAddButton 
+                type='button' 
+                onClick={() => {
+                  window.scroll(0, 0);
+                  toggle();
+                  }
+                }>
+                    Quick add
+              </QuickAddButton>
               <Modal on={on} toggle={toggle}>
                 <QuickAdd 
                   toggle={toggle} 
-                  timestamp={selectedDay.timestamp}
-                  startDate={startDate} 
-                  endDate={endDate} />
+                  timestamp={selectedDay.timestamp} />
               </Modal>
             </>
           )}
@@ -58,28 +65,37 @@ const DayContainer = styled.div`
       justify-content: space-between;
       align-items: flex-start;
       background-color: ${colors.backgroundDark};
+      border: 1px solid ${colors.defaultColor};
+      border-top: none;
       color: ${colors.white};
       padding: 2rem;
-
-      h4 {
-        font-size: var(--step-0);
-        font-weight: 600;
-        border-bottom: 1px solid ${colors.white};
-        margin-bottom: var(--step-1);
-        max-width: 300px;
-      }
-
-      ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        max-width: 300px;
-      }
-
-      li + li {
-        margin-top: var(--step-0);
-      }
     }
+`;
+
+const ListContainer = styled.div`
+  width: 50%;
+  max-width: 250px;
+
+  h4 {
+      font-size: var(--step-0);
+      font-weight: 600;
+      margin-bottom: var(--step-1);
+    }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 300px;
+  }
+
+  li + li {
+    margin-top: var(--step-0);
+  }
+
+  li a {
+    color: ${colors.linkPrimary};
+  }
 `;
 
 const QuickAddButton = styled(LittleButton)`

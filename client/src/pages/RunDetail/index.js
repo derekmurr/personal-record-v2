@@ -210,6 +210,11 @@ const EditDeleteContainer = styled.div`
   button:first-of-type {
     margin-right: 2rem;
   }
+
+  @media(max-width: ${breakpoints.mobilesmall}) {
+    grid-column: 1 / -1;
+    grid-row: 8 / 9;
+  }
 `;
 
 const DateContainer = styled.div`
