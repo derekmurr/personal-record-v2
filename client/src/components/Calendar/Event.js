@@ -45,6 +45,8 @@ const EventLink = styled.button`
   }
 
   @media (max-width: 675px) {
+    padding: 4px;
+    pointer-events: none;
     span {
       display: none;
     }

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import styled from "styled-components";
 
 import { getMonthStr } from "./helpers";
 import CalendarDay from "./CalendarDay";
+import MobileDay from "./MobileDay";
 import { LittleButton } from "../../elements";
 import { colors } from "../../styles";
 
@@ -11,8 +12,9 @@ const CalendarMonth = ({
   monthArray, 
   currentMonth, 
   currentYear, 
-  setNewMonth 
+  setNewMonth  
 }) => {
+  const [ selectedDay, setSelectedDay ] = useState(monthArray[0]);
 
   return (
     <CalendarSection>
@@ -39,8 +41,17 @@ const CalendarMonth = ({
         ))}
       </WeekContainer>
       <WeekContainer>
-        {monthArray?.map((day, index) => <CalendarDay key={`day${index}`} day={day} />)}
+        {monthArray?.map((day, index) => (
+        <CalendarDay 
+          key={`day${index}`} 
+          day={day} 
+          setSelectedDay={setSelectedDay} 
+        />
+        ))}
       </WeekContainer>
+      <MobileDay 
+        selectedDay={selectedDay} 
+      />
     </CalendarSection>
   );
 };
