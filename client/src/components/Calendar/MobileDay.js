@@ -20,7 +20,7 @@ const MobileDay = ({ selectedDay }) => {
         {selectedDay.runs.length > 0 && (
           <ul>
             {selectedDay.runs.map(run => (
-              <li>
+              <li key={`run-list-${run.id}`}>
                 <Link to={`/runs/${run.id}`}>
                   {`${run.distance}km ${run.workoutType}`}
                 </Link>

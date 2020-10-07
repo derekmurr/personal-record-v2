@@ -1,7 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import { BiAddToQueue } from "react-icons/bi";
 
 import Event from "./Event";
+import Modal from "../../components/Modal";
+import QuickAdd from "./QuickAdd";
+import { Toggle } from "../../utilities";
 import { colors } from "../../styles";
 
 const CalendarDay = ({ day, setSelectedDay }) => {
@@ -17,7 +21,27 @@ const CalendarDay = ({ day, setSelectedDay }) => {
             key={`day${day.date}-run${i}`}
           />
         ))}
-        <QuickAddButton><span>+</span></QuickAddButton>
+        <Toggle>
+          {({ on, toggle }) => (
+            <>
+              <QuickAddButton
+                type='button'
+                onClick={() => {
+                  window.scroll(0, 0);
+                  toggle();
+                }
+                }>
+                <span className="icon"><BiAddToQueue aria-hidden={true} /></span>
+                <span className="text">Quick add run</span>
+              </QuickAddButton>
+              <Modal on={on} toggle={toggle}>
+                <QuickAdd
+                  toggle={toggle}
+                  timestamp={day.timestamp} />
+              </Modal>
+            </>
+          )}
+        </Toggle>
       </EventContainer>
       <TouchOverlay onClick={() => setSelectedDay(day)}>
       </TouchOverlay>
@@ -97,12 +121,26 @@ const QuickAddButton = styled.button`
   color: ${colors.defaultColor};
   cursor: pointer;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
   span {
+    display: block;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.2s ease;
+  }
+  .icon {
+    font-size: var(--step-2);
+  }
+  .text {
+    font-size: var(--step--1);
+    font-family: var(--font-condensed);
+    line-height: 1;
+  }
+
+  &:focus {
+    outline: 0;
   }
 
   &:hover span,
