@@ -95,6 +95,7 @@ const QuickAdd = ({ toggle, timestamp }) => {
             min={0}
             placeholder="0.0"
             step="0.01"
+            autoFocus
             ref={register({
               validate: {
                 positive: value => value > 0

@@ -20,7 +20,7 @@ const SectionTwo = () => {
         </HalfSection>
         <HalfSection>
           <h2>What’s new?</h2>
-          <p>August 26, 2020: Full re-write of the database and server-side code, featuring more secure sign-in: laying the groundwork for future additions. Note that the calendar view is offline while we re-write it to make it better!</p>
+          <p>October, 2020: Full re-write of the database and server-side code, featuring more secure sign-in. New Quick-add function: just click or tap a day on the calendar to easily add a run on that day!</p>
         </HalfSection>
       </FlexContainer>
     </SecondSection>
