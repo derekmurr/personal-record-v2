@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:12-alpine AS base 
 
 # Get and set the environment variables
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
@@ -23,3 +23,9 @@ RUN npm install --no-optional pm2 -g && \
 
 # Copy all the files and make the node user the owner
 COPY --chown=node:node . .
+
+FROM base AS production 
+
+RUN npm prune --production 
+
+EXPOSE 4000
