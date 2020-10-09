@@ -3,7 +3,7 @@ version: "3.7"
 services:
   mongo:
     image: mongo:4.2.2
-    container_name: mongodb
+    container_name: mongo
     restart: always
     volumes:
       - ./data/db:/data/db
@@ -36,6 +36,7 @@ services:
       - ACCOUNTS_SERVICE_URL=http://localhost:4001
       - RUNS_SERVICE_PORT=4003
       - RUNS_SERVICE_URL=http://localhost:4003
+      - PORT=4000
       - PROFILES_SERVICE_PORT=4002
       - PROFILES_SERVICE_URL=http://localhost:4002
       - REDIS_HOST_ADDRESS=redis
