@@ -3,7 +3,7 @@ upstream web {
 }
 
 upstream graphql {
-    server 127.0.0.1:4000;
+    server graphql:4000/graphql;
 }
 
 server {
@@ -39,7 +39,7 @@ server {
     }
 
     location /graphql {
-        proxy_pass          http://graphql/graphql;
+        proxy_pass          http://graphql;
         proxy_set_header    Host                    $http_host;
         proxy_set_header    X-Real-IP               $remote_addr;
         proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
